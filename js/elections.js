@@ -13,10 +13,11 @@ class Election {
     }
 
     drawDiagram(data, colors, labels) {
+        this.barChart?.destroy()
         let canvas = document.getElementById("diagram-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let myBarChart = new Chart(ctx, {
+        this.barChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 datasets: [{
