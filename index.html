@@ -1,0 +1,83 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Simulating Elections</title>
+    <meta name="description" content="Simulating Elections">
+    <meta name="author" content="frcroth">
+
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <h1>Simulating elections</h1>
+    <p> This is the political compass. While a crude model to depict real politics, it will suffice for our simulations.
+        Each person's political views are represented by a position in the coordinate system. This applies to voters and
+        candidates.
+    </p>
+    <p>
+        Start by drawing voters and candidates by clicking at the position, or generate random people.
+        Every voter wants to vote for the candidate that has the closest distance to them.</p>
+    <div class="row">
+        <div class="col-sm" id="compass-box">
+            <canvas id="political_compass" width="400" height="400">
+                Your browser does not support the HTML canvas tag.
+            </canvas>
+        </div>
+        <div class="col-sm">
+            <button onclick="generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Draw mode
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" onclick="setDrawMode(0)" href="#">Draw Voters</a>
+                    <a class="dropdown-item" onclick="setDrawMode(1)" href="#">Draw candidates</a>
+                </div>
+            </div>
+            <h4>Parties</h4>
+            <ul id="candidate_list" class="list-group"></ul>
+        </div>
+        <div class="col-sm">
+            <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post election</button>
+            <div id="election-result-text"></div>
+        </div>
+        <div id="election-results" class="col-sm">
+            <canvas id="diagram-canvas" width="600" height="400" style="display: block; margin:auto"></canvas>
+        </div>
+    </div>
+
+    <!-- BOOTSTRAP -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"
+        integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
+        integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+        crossorigin="anonymous"></script>
+
+    <!-- Custom Scripts-->
+    <script src="js/model.js"></script>
+    <script src="js/compass.js"></script>
+    <script src="js/elections.js"></script>
+</body>
+
+</html>

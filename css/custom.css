@@ -1,0 +1,20 @@
+canvas#political_compass {
+    border: 1px solid #000000;
+}
+
+div {
+    margin: 2px;
+}
+
+li {
+    list-style-type: none
+}
+
+.party-container {
+    width: max-content;
+    padding: 1%
+}
+
+#compass-box {
+    padding: 20px
+}
