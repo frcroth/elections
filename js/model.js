@@ -68,18 +68,4 @@ class Model {
         return preferenceMap
     }
 
-    performSimpleFPTPElection() {
-        let preferences = this.calculatePreferences()
-
-        let voteCount = new Array(this.candidates.length).fill(0)
-
-        for (let voter_preference in preferences) {
-            let voter = voter_preference
-            let first_preference = preferences[voter_preference][0]
-            voteCount[first_preference]++
-        }
-        return voteCount
-    }
-
-
 }

@@ -37,10 +37,10 @@ function addVoter(canvas, pos) {
 // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
 function getContrastYIQ(hexcolor) {
     hexcolor = hexcolor.replace("#", "");
-    var r = parseInt(hexcolor.substr(0, 2), 16);
-    var g = parseInt(hexcolor.substr(2, 2), 16);
-    var b = parseInt(hexcolor.substr(4, 2), 16);
-    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    const r = parseInt(hexcolor.substr(0, 2), 16);
+    const g = parseInt(hexcolor.substr(2, 2), 16);
+    const b = parseInt(hexcolor.substr(4, 2), 16);
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
     return (yiq >= 128) ? '#000000' : '#FFFFFF';
 }
 
@@ -75,12 +75,12 @@ function getRandomInteger(min, max) {
 }
 
 function generateRandomPoints() {
-    if (drawMode == 0) {
+    if (drawMode === 0) {
         for (let i = 0; i < 10; i++) {
             addVoter(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) })
         }
     }
-    if (drawMode == 1) {
+    if (drawMode === 1) {
         for (let i = 0; i < 4; i++) {
             addCandidate(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) })
         }
@@ -91,10 +91,10 @@ drawLines(canvas);
 
 canvas.addEventListener('mousedown', function (e) {
     let pos = getCursorPosition(canvas, e)
-    if (drawMode == 0) {
+    if (drawMode === 0) {
         addVoter(canvas, pos)
     }
-    if (drawMode == 1) {
+    if (drawMode === 1) {
         addCandidate(canvas, pos)
     }
 
