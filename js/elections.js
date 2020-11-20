@@ -12,6 +12,10 @@ class Election {
         // subclass responsibility
     }
 
+    majority() {
+        return Math.ceil(this.model.voters.length / 2)
+    }
+
     drawDiagram(data, colors, labels) {
         this.barChart?.destroy()
         let canvas = document.getElementById("diagram-canvas");
@@ -59,7 +63,16 @@ class Election {
     }
 
     getWinner() {
-        // subclass responsibility
+        let winner_index = this.results.indexOf(Math.max.apply(Math, this.results))
+        return this.model.candidates[winner_index]
+    }
+
+    getWinnerVotes() {
+        return Math.max.apply(Math, this.results)
+    }
+
+    getWinnerPercentage() {
+        return Math.round(this.getWinnerVotes() / this.model.voters.length * 100)
     }
 
 }
@@ -92,19 +105,6 @@ class FirstPastThePost extends Election {
 
     resultClear() {
         return this.results.indexOf(this.getWinnerVotes()) === this.results.lastIndexOf(this.getWinnerVotes())
-    }
-
-    getWinner() {
-        let winner_index = this.results.indexOf(Math.max.apply(Math, this.results))
-        return this.model.candidates[winner_index]
-    }
-
-    getWinnerVotes() {
-        return Math.max.apply(Math, this.results)
-    }
-
-    getWinnerPercentage() {
-        return Math.round(this.getWinnerVotes() / this.model.voters.length * 100)
     }
 
     getRunoffCandidates() {
@@ -194,6 +194,97 @@ class FirstPastThePost extends Election {
 
 }
 
+class InstantRunoff extends Election {
+
+    constructor() {
+        super()
+    }
+
+    performElection() {
+        this.eliminatedCandidates = []
+        this.results = this.calculateResults()
+        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
+            document.model.candidates.map((value) => value.party))
+        this.iteration = 0;
+        this.setResultText();
+    }
+
+    performIteration() {
+        if (!this.electionOver()) {
+            this.eliminateCandidate(this.getLowestPerformingCandidate().id)
+            this.results = this.calculateResults()
+            this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
+                document.model.candidates.map((value) => value.party))
+            this.iteration++
+            this.setResultText();
+        }
+    }
+
+    eliminateCandidate(candidate_id) {
+        this.eliminatedCandidates.push(candidate_id)
+    }
+
+    getLowestPerformingCandidate() {
+        for (let i = 0; i < this.results.length; i++) {
+            if(!this.stillPerforming(i)){
+                this.results[i] = Infinity
+            }
+        }
+        let looser = this.model.candidates[this.results.indexOf(Math.min.apply(Math, this.results))]
+        for (let i = 0; i < this.results.length; i++) {
+            if(this.results[i] === Infinity){
+                this.results[i] = 0
+            }
+        }
+        return looser
+    }
+
+    electionOver() {
+        return this.getWinnerVotes() > this.majority()
+    }
+
+    stillPerforming(candidate_id) {
+        return !this.eliminatedCandidates.includes(candidate_id)
+    }
+
+    calculateResults() {
+        let preferences = this.model.calculatePreferences()
+
+        let voteCount = new Array(this.model.candidates.length).fill(0)
+
+        for (let voter_preference in preferences) {
+            const voter = voter_preference
+            for (let i = 0; i < preferences[voter].length; i++) {
+                if (this.stillPerforming(preferences[voter][i])) {
+                    voteCount[preferences[voter][i]]++
+                    break
+                }
+            }
+        }
+        return voteCount
+    }
+
+    setResultText() {
+        const text_container = document.getElementById("election-result-text")
+        text_container.innerHTML = ''
+        const text = document.createElement("div")
+        let content = "<p>In an <i>instant runoff</i> election, a candidate wins with a majority of the votes. If no majority is achieved, the candidate with the fewest votes is eliminated and the votes go to the candidate that is preferred next."
+        if (!this.electionOver()) {
+            content += "</br> There is no winner yet. Iteration " + this.iteration + "</p>"
+            let iterationButton = "<button onclick=\"instantRunoffIteration()\" class=\"btn btn-secondary\">Iterate instant runoff</button>"
+            content += iterationButton
+        } else {
+            content += "</br> The votes have been counted. The winner is the " + this.getWinner().party + ". Congratulations! </br> The winner has won with " + this.getWinnerPercentage() + "% of the effective vote.</p>"
+        }
+
+        text.innerHTML = content
+        text_container.appendChild(text)
+    }
+
+}
+
+let ir
+
 let fptp
 
 function firstPastThePost() {
@@ -203,4 +294,13 @@ function firstPastThePost() {
 
 function performRunOff() {
     fptp.performRunOffElection()
+}
+
+function instantRunoff() {
+    ir = new InstantRunoff()
+    ir.performElection()
+}
+
+function instantRunoffIteration() {
+    ir.performIteration()
 }

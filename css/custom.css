@@ -31,6 +31,9 @@ p {
     width: 100%
 }
 
+.btn-secondary {
+    margin: 5px
+}
 
 .footer {
     position: fixed;

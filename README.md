@@ -3,9 +3,13 @@ This tool allows you to simulate elections. Place candidates and voters on a pol
 
 ![](doc/Screenshot_20201120.png)
 
-Currently only first past the post is implemented.
-
 [Try it](https://frcroth.de/elections/)
+
+### Mechanisms
+
+Currently implemented voting mechanisms:
+- First past the post
+- Instant runoff
 
 ### Usage
 
