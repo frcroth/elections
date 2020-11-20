@@ -5,6 +5,8 @@ This tool allows you to simulate elections. Place candidates and voters on a pol
 
 Currently only first past the post is implemented.
 
+[Try it](https://frcroth.de/elections/)
+
 ### Usage
 
 Add voters by clicking into the coordinate system. Add candidates by clicking into the coordinate system and setting the appropriate draw mode.  
