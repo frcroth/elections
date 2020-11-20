@@ -63,7 +63,6 @@ function addCandidate(canvas, pos) {
     else {
         alert("Max number of candidates reached")
     }
-
 }
 
 function setDrawMode(mode) {
