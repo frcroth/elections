@@ -1,15 +1,16 @@
 # elections
 This tool allows you to simulate elections. Place candidates and voters on a political coordinate system, and compare different voting systems to get different results.
 
-![](doc/Screenshot_20201120.png)
+![](doc/Screenshot_20201121.png)
 
 [Try it](https://frcroth.de/elections/)
 
 ### Mechanisms
 
 Currently implemented voting mechanisms:
-- First past the post
-- Instant runoff
+- [First past the post](https://en.wikipedia.org/wiki/First-past-the-post_voting)
+- [Instant runoff](https://en.wikipedia.org/wiki/Instant-runoff_voting)
+- [Borda count](https://en.wikipedia.org/wiki/Borda_count)
 
 ### Usage
 

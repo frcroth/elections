@@ -71,8 +71,12 @@ class Election {
         return Math.max.apply(Math, this.results)
     }
 
+    getNumberOfVotes() {
+        return this.results.reduce((a, b) => a + b, 0)
+    }
+
     getWinnerPercentage() {
-        return Math.round(this.getWinnerVotes() / this.model.voters.length * 100)
+        return Math.round(this.getWinnerVotes() / this.getNumberOfVotes() * 100)
     }
 
 }
@@ -226,13 +230,13 @@ class InstantRunoff extends Election {
 
     getLowestPerformingCandidate() {
         for (let i = 0; i < this.results.length; i++) {
-            if(!this.stillPerforming(i)){
+            if (!this.stillPerforming(i)) {
                 this.results[i] = Infinity
             }
         }
         let looser = this.model.candidates[this.results.indexOf(Math.min.apply(Math, this.results))]
         for (let i = 0; i < this.results.length; i++) {
-            if(this.results[i] === Infinity){
+            if (this.results[i] === Infinity) {
                 this.results[i] = 0
             }
         }
@@ -280,11 +284,44 @@ class InstantRunoff extends Election {
         text.innerHTML = content
         text_container.appendChild(text)
     }
+}
 
+class BordaCount extends Election {
+    performElection() {
+        this.results = this.calculateResults()
+        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
+            document.model.candidates.map((value) => value.party))
+        this.setResultText();
+    }
+
+    calculateResults() {
+        let preferences = this.model.calculatePreferences()
+
+        let voteScore = new Array(this.model.candidates.length).fill(0)
+
+        for (let voter_preference in preferences) {
+            const voter = voter_preference
+            for (let i = 0; i < preferences[voter].length; i++) {
+                voteScore[preferences[voter][i]] += this.model.candidates.length - i
+            }
+        }
+        return voteScore
+    }
+
+    setResultText() {
+        const text_container = document.getElementById("election-result-text")
+        text_container.innerHTML = ''
+        const text = document.createElement("div")
+        let content = "<p>In a <i>Borda count</i> election, voters rank candidates. The preferences are then converted into scores, which are summed. "
+        content += "The " + this.getWinner().party + " won with a score of " + this.getWinnerVotes() + ", that's " + this.getWinnerPercentage() + "% of the score."
+
+        text.innerHTML = content
+        text_container.appendChild(text)
+    }
 }
 
 let ir
-
+let bc
 let fptp
 
 function firstPastThePost() {
@@ -303,4 +340,9 @@ function instantRunoff() {
 
 function instantRunoffIteration() {
     ir.performIteration()
+}
+
+function bordaCount() {
+    bc = new BordaCount()
+    bc.performElection()
 }

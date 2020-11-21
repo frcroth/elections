@@ -13,10 +13,10 @@ class Model {
     }
 
     generateRandomPartyName() {
-        let attributes = ["Green", "Socialist", "Conservative", "Liberal", "Reform", "Social", "Progressive", "Nationalist", "Popular", "Indigenous", "Constitutional", "Centrist", "Satirical", "Technocratic", "Marxist", "Leninist", "Trotzkyist", "Neo", "Democratic", "Orthodox", "Humanist", "Libertarian", "Fundamentalist", "Accelerationist", "Republican", "Imperialist", "Capitalist", "Populist", "Worker's", "Royalist", "Anarchist", "Law", "Order", "Spartacist", "People's", "Freedom", "Pirate", "Ecologic", "Free", "Animal's Rights", "Alternative", "Federal", "Whig", "Citizen's", "Farmer's", "Left", "Right", "Feminist", "Spiritual", "Labor", "Independent", "Young People's", "Old People's", "Unity", "Equality", "New", "Action", "Families", "Justice", "Peace", "Pacifist", "Prohibition", "Agrianist", "Ruralist"]
-        let types = ["Party", "Alliance", "Block", "Front", "Party", "Party", "Party", "Party", "Union", "League", "Group", "Forum", "Revolution", "Federation", "Movement", "Action", "Party", "Party", "Party", "Party", "Party"]
+        let attributes = ["Green", "Socialist", "Conservative", "Liberal", "Reform", "Social", "Progressive", "Nationalist", "Popular", "Indigenous", "Constitutional", "Centrist", "Satirical", "Technocratic", "Marxist", "Leninist", "Trotzkyist", "Democratic", "Orthodox", "Humanist", "Libertarian", "Fundamentalist", "Accelerationist", "Republican", "Imperialist", "Capitalist", "Populist", "Worker's", "Royalist", "Anarchist", "Law", "Order", "Spartacist", "People's", "Freedom", "Pirate", "Ecologic", "Free", "Animal's Rights", "Alternative", "Federal", "Whig", "Citizen's", "Farmer's", "Left", "Right", "Feminist", "Spiritual", "Labor", "Independent", "Young People's", "Old People's", "Unity", "Equality", "New", "Action", "Families", "Justice", "Peace", "Pacifist", "Prohibition", "Agrianist", "Ruralist", "First", "Animal", "Secular", "United", "Patriot", "Change", "Modern", "Prosperity"]
+        let types = ["Party", "Alliance", "Block", "Front", "Party", "Party", "Party", "Party", "Union", "League", "Group", "Forum", "Revolution", "Federation", "Movement", "Action", "Party", "Party", "Party", "Party", "Party", "Rally", "Coalition", "Congress", "Party", "Party", "Party", "Party"]
         let attribute1 = attributes[Math.floor(Math.random() * attributes.length)];
-        let attribute2 = attributes[Math.floor(Math.random() * attributes.length)];
+        let attribute2 = Math.random()<0.7 ? attributes[Math.floor(Math.random() * attributes.length)] : "";
         let type = types[Math.floor(Math.random() * types.length)];
         return attribute1 + " " + attribute2 + " " + type
     }
