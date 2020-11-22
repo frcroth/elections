@@ -23,6 +23,10 @@ h1 {
     padding: 5px
 }
 
+h4 {
+    padding: 5px
+}
+
 p {
     padding: 5px
 }
@@ -50,5 +54,9 @@ p {
 
 .footer div div {
     padding-left: 40px;
-    padding-right: 40px;
+    padding-right: 40px
+}
+
+#additional-results {
+    padding: 20px
 }

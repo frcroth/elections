@@ -6,6 +6,7 @@ class Model {
         this.MAX_NUMBER_CANDIDATES = 8
         this.voters = []
         this.candidates = []
+        this.coordinate_system_extent = 400
     }
 
     generateRandomColor() {
@@ -16,7 +17,7 @@ class Model {
         let attributes = ["Green", "Socialist", "Conservative", "Liberal", "Reform", "Social", "Progressive", "Nationalist", "Popular", "Indigenous", "Constitutional", "Centrist", "Satirical", "Technocratic", "Marxist", "Leninist", "Trotzkyist", "Democratic", "Orthodox", "Humanist", "Libertarian", "Fundamentalist", "Accelerationist", "Republican", "Imperialist", "Capitalist", "Populist", "Worker's", "Royalist", "Anarchist", "Law", "Order", "Spartacist", "People's", "Freedom", "Pirate", "Ecologic", "Free", "Animal's Rights", "Alternative", "Federal", "Whig", "Citizen's", "Farmer's", "Left", "Right", "Feminist", "Spiritual", "Labor", "Independent", "Young People's", "Old People's", "Unity", "Equality", "New", "Action", "Families", "Justice", "Peace", "Pacifist", "Prohibition", "Agrianist", "Ruralist", "First", "Animal", "Secular", "United", "Patriot", "Change", "Modern", "Prosperity"]
         let types = ["Party", "Alliance", "Block", "Front", "Party", "Party", "Party", "Party", "Union", "League", "Group", "Forum", "Revolution", "Federation", "Movement", "Action", "Party", "Party", "Party", "Party", "Party", "Rally", "Coalition", "Congress", "Party", "Party", "Party", "Party"]
         let attribute1 = attributes[Math.floor(Math.random() * attributes.length)];
-        let attribute2 = Math.random()<0.7 ? attributes[Math.floor(Math.random() * attributes.length)] : "";
+        let attribute2 = Math.random() < 0.7 ? attributes[Math.floor(Math.random() * attributes.length)] : "";
         let type = types[Math.floor(Math.random() * types.length)];
         return attribute1 + " " + attribute2 + " " + type
     }
@@ -24,8 +25,7 @@ class Model {
     addVoter(pos) {
         this.voters.push({
             id: this.voters.length,
-            x: pos.x,
-            y: pos.y
+            pos: pos
             // Maybe add name, history, ...
         })
     }
@@ -36,8 +36,7 @@ class Model {
         }
         let candidate = {
             id: this.candidates.length,
-            x: pos.x,
-            y: pos.y,
+            pos: pos,
             color: this.generateRandomColor(),
             party: this.generateRandomPartyName()
         }
@@ -55,7 +54,7 @@ class Model {
     getPreferences(voter) {
         let distances = []
         this.candidates.forEach((candidate) => {
-            let dist = this.calculateDistance({ x: voter.x, y: voter.y }, { x: candidate.x, y: candidate.y })
+            let dist = this.calculateDistance(voter.pos, candidate.pos)
             distances.push({ id: candidate.id, dist: dist })
         })
         distances.sort((a, b) => a.dist - b.dist)
@@ -66,6 +65,29 @@ class Model {
         let preferenceMap = {}
         this.voters.forEach((voter) => preferenceMap[voter.id] = this.getPreferences(voter))
         return preferenceMap
+    }
+
+    getMedianDissatisfaction(winner_id) {
+        let dissatisfactionMap = this.calculateDissatisfaction(winner_id)
+        let dissatisfactions = []
+        for (let key in dissatisfactionMap) {
+            dissatisfactions.push(dissatisfactionMap[key])
+        }
+        const mid = Math.floor(dissatisfactions.length / 2)
+        dissatisfactions.sort()
+        return dissatisfactions.length % 2 !== 0 ? dissatisfactions[mid] : (dissatisfactions[mid - 1] + dissatisfactions[mid]) / 2;
+    }
+
+
+    getDiagonalLength() {
+        return Math.sqrt(2 * (this.coordinate_system_extent ** 2))
+    }
+
+    calculateDissatisfaction(winner_id) {
+        let dissatisfactionMap = {}
+        let winner = this.candidates[winner_id]
+        this.voters.forEach((voter) => dissatisfactionMap[voter.id] = this.calculateDistance(voter.pos, winner.pos)/this.getDiagonalLength())
+        return dissatisfactionMap
     }
 
 }

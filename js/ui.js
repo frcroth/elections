@@ -63,6 +63,7 @@ function addCandidate(canvas, pos) {
     else {
         alert("Max number of candidates reached")
     }
+    return candidate
 }
 
 function setDrawMode(mode) {
@@ -81,7 +82,10 @@ function generateRandomPoints() {
     }
     if (drawMode === 1) {
         for (let i = 0; i < 4; i++) {
-            addCandidate(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) })
+            let candidate = addCandidate(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) })
+            if(!candidate) {
+                break
+            }
         }
     }
 }
