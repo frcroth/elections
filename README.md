@@ -11,6 +11,7 @@ Currently implemented voting mechanisms:
 - [First past the post](https://en.wikipedia.org/wiki/First-past-the-post_voting)
 - [Instant runoff](https://en.wikipedia.org/wiki/Instant-runoff_voting)
 - [Borda count](https://en.wikipedia.org/wiki/Borda_count)
+- [Bucklin voting](https://en.wikipedia.org/wiki/Bucklin_voting#Voting_process)
 
 ### Usage
 
