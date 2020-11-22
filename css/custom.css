@@ -60,3 +60,12 @@ p {
 #additional-results {
     padding: 20px
 }
+
+.quote {
+    font-style: italic;
+    margin: auto;
+}
+
+.head-row {
+    width: 100%
+}

@@ -17,7 +17,14 @@
 </head>
 
 <body>
-    <h1>Simulating elections</h1>
+    <div class="row head-row">
+        <div class="col-lg">
+            <h1>Simulating elections</h1>
+        </div>
+        <div class="col-sm" id="quote-box">
+            <q class="quote ">I consider it completely unimportant who in the party will vote, or how; but
+                what is extraordinarily important is this — who will count the votes, and how.</q> - Stalin</div>
+    </div>
     <p> This is the political coordinate system. While a crude model to depict real politics, it will suffice for our
         simulations.
         Each person's political views are represented by a position in the coordinate system. This applies to voters and
@@ -25,7 +32,9 @@
     </p>
     <p>
         Start by drawing voters and candidates by clicking at the position, or generate random people.
-        Every voter wants to vote for the candidate that has the closest distance to them.</p>
+        Every voter wants to vote for the candidate that has the closest distance to them. Try out different voting
+        systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
+        interpreted to result in different winners.</p>
     <div class="row main-row">
         <div class="col-sm" id="compass-box">
             <canvas id="political_compass" width="400" height="400">

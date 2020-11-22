@@ -84,7 +84,7 @@ class Election {
         text_container.innerHTML = ''
         const text = document.createElement("p")
         let content = "<h4>Additional stats</h4>"
-        content += "The median dissatisfaction is " + Math.round(this.model.getMedianDissatisfaction(this.getWinner().id) * 100) + "%. Each voters dissatisfaction is calculated with the distance to the winner."
+        content += "<b>Dissatisfaction</b>: Median dissatisfaction " + Math.round(this.model.getMedianDissatisfaction(this.getWinner().id) * 100) + "%, Average dissatisfaction " + Math.round(this.model.getAverageDissatisfaction(this.getWinner().id) * 100) + "%. Each voter's dissatisfaction is calculated with the distance to the winner."
 
         text.innerHTML = content
         text_container.appendChild(text)
@@ -233,7 +233,7 @@ class InstantRunoff extends Election {
                 document.model.candidates.map((value) => value.party))
             this.iteration++
             this.setResultText();
-        } 
+        }
     }
 
     eliminateCandidate(candidate_id) {

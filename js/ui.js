@@ -36,17 +36,17 @@ function addVoter(canvas, pos) {
 
 // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
 function getContrastYIQ(hexcolor) {
-    hexcolor = hexcolor.replace("#", "");
-    const r = parseInt(hexcolor.substr(0, 2), 16);
-    const g = parseInt(hexcolor.substr(2, 2), 16);
-    const b = parseInt(hexcolor.substr(4, 2), 16);
-    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return (yiq >= 128) ? '#000000' : '#FFFFFF';
+    hexcolor = hexcolor.replace("#", "")
+    const r = parseInt(hexcolor.substr(0, 2), 16)
+    const g = parseInt(hexcolor.substr(2, 2), 16)
+    const b = parseInt(hexcolor.substr(4, 2), 16)
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000
+    return (yiq >= 128) ? '#000000' : '#FFFFFF'
 }
 
 function listCandidates() {
-    const list = document.getElementById("candidate_list");
-    list.innerHTML = '';
+    const list = document.getElementById("candidate_list")
+    list.innerHTML = ''
     document.model.candidates.forEach((candidate) => {
         let list_item = document.createElement("li")
         list_item.innerHTML = "<div class=\"party-container\" style=\"background-color: " + candidate.color + "; color: " + getContrastYIQ(candidate.color) + ";\">" + candidate.party + "</div>"
@@ -71,7 +71,7 @@ function setDrawMode(mode) {
 }
 
 function getRandomInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+    return Math.floor(Math.random() * (max - min)) + min
 }
 
 function generateRandomPoints() {
@@ -83,22 +83,27 @@ function generateRandomPoints() {
     if (drawMode === 1) {
         for (let i = 0; i < 4; i++) {
             let candidate = addCandidate(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) })
-            if(!candidate) {
+            if (!candidate) {
                 break
             }
         }
     }
 }
 
-drawLines(canvas);
+function readyCanvas() {
+    drawLines(canvas)
 
-canvas.addEventListener('mousedown', function (e) {
-    let pos = getCursorPosition(canvas, e)
-    if (drawMode === 0) {
-        addVoter(canvas, pos)
-    }
-    if (drawMode === 1) {
-        addCandidate(canvas, pos)
-    }
+    canvas.addEventListener('mousedown', function (e) {
+        let pos = getCursorPosition(canvas, e)
+        if (drawMode === 0) {
+            addVoter(canvas, pos)
+        }
+        if (drawMode === 1) {
+            addCandidate(canvas, pos)
+        }
 
-})
+    })
+
+}
+
+readyCanvas()

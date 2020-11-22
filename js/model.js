@@ -67,12 +67,23 @@ class Model {
         return preferenceMap
     }
 
-    getMedianDissatisfaction(winner_id) {
+    getDissatisfactionList(winner_id) {
         let dissatisfactionMap = this.calculateDissatisfaction(winner_id)
         let dissatisfactions = []
         for (let key in dissatisfactionMap) {
             dissatisfactions.push(dissatisfactionMap[key])
         }
+
+        return dissatisfactions
+    }
+
+    getAverageDissatisfaction(winner_id) {
+        let dissatisfactions = this.getDissatisfactionList(winner_id)
+        return dissatisfactions.reduce((a, b) => (a + b)) / dissatisfactions.length;
+    }
+
+    getMedianDissatisfaction(winner_id) {
+        let dissatisfactions = this.getDissatisfactionList(winner_id)
         const mid = Math.floor(dissatisfactions.length / 2)
         dissatisfactions.sort()
         return dissatisfactions.length % 2 !== 0 ? dissatisfactions[mid] : (dissatisfactions[mid - 1] + dissatisfactions[mid]) / 2;
