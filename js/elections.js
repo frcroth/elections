@@ -58,8 +58,19 @@ class Election {
 
     }
 
-    setResultText() {
-        // subclass responsibility
+    setResultText(resultText) {
+        const text_container = document.getElementById("election-result-text");
+        text_container.innerHTML = '';
+        const text = document.createElement("div");
+        text.innerHTML = resultText;
+        text_container.appendChild(text);
+    }
+
+    publishResults() {
+        this.clearAdditionalStats()
+        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
+            document.model.candidates.map((value) => value.party));
+        this.setResultText(this.getResultText());
     }
 
     getWinner() {
@@ -112,10 +123,7 @@ class FirstPastThePost extends Election {
 
     performElection() {
         this.results = this.calculateResults();
-        this.clearAdditionalStats();
-        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-            document.model.candidates.map((value) => value.party));
-        this.setResultText();
+        this.publishResults();
         this.setAdditionalStats();
     }
 
@@ -197,10 +205,7 @@ class FirstPastThePost extends Election {
     }
 
 
-    setResultText() {
-        const text_container = document.getElementById("election-result-text");
-        text_container.innerHTML = '';
-        const text = document.createElement("div");
+    getResultText() {
         let content = "<p>In a <i>first past the post</i> election, the candidate with the plurality of votes wins. " +
             "When two candidates have the same number of votes, it may be decided by e.g. a runoff election or a coin toss.";
         if (this.mostVotesTied()) {
@@ -215,8 +220,7 @@ class FirstPastThePost extends Election {
         content += runOffButton;
         content += "<div id=\"runoff-text\"></div>";
 
-        text.innerHTML = content;
-        text_container.appendChild(text);
+        return content;
     }
 
 }
@@ -229,22 +233,20 @@ class InstantRunoff extends Election {
 
     performElection() {
         this.eliminatedCandidates = [];
+        this.iteration = 0;
         this.clearAdditionalStats();
         this.results = this.calculateResults();
-        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-            document.model.candidates.map((value) => value.party));
-        this.iteration = 0;
-        this.setResultText();
+        this.publishResults();
     }
+
+
 
     performIteration() {
         if (!this.electionOver()) {
+            this.iteration++;
             this.eliminateCandidate(this.getLowestPerformingCandidate().id);
             this.results = this.calculateResults();
-            this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-                document.model.candidates.map((value) => value.party));
-            this.iteration++;
-            this.setResultText();
+            this.publishResults();
         }
     }
 
@@ -292,10 +294,7 @@ class InstantRunoff extends Election {
         return voteCount;
     }
 
-    setResultText() {
-        const text_container = document.getElementById("election-result-text");
-        text_container.innerHTML = '';
-        const text = document.createElement("div");
+    getResultText() {
         let content = "<p>In an <i>instant runoff</i> election, a candidate wins with a majority of the votes. " +
             "If no majority is achieved, the candidate with the fewest votes is eliminated and the votes go to the candidate that is preferred next.";
         if (!this.electionOver()) {
@@ -308,18 +307,14 @@ class InstantRunoff extends Election {
             this.setAdditionalStats();
         }
 
-        text.innerHTML = content;
-        text_container.appendChild(text);
+        return content;
     }
 }
 
 class BordaCount extends Election {
     performElection() {
         this.results = this.calculateResults();
-        this.clearAdditionalStats();
-        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-            document.model.candidates.map((value) => value.party));
-        this.setResultText();
+        this.publishResults();
         this.setAdditionalStats();
     }
 
@@ -337,10 +332,7 @@ class BordaCount extends Election {
         return voteScore;
     }
 
-    setResultText() {
-        const text_container = document.getElementById("election-result-text");
-        text_container.innerHTML = '';
-        const text = document.createElement("div");
+    getResultText() {
         let content = "<p>In a <i>Borda count</i> election, voters rank candidates." +
             " The preferences are then converted into scores, which are summed. ";
         if (this.mostVotesTied()) {
@@ -349,8 +341,7 @@ class BordaCount extends Election {
             content += "The " + this.getWinner().party + " won with a score of " + this.getWinnerVotes() +
                 ", that's " + this.getWinnerPercentage() + "% of the score.";
         }
-        text.innerHTML = content;
-        text_container.appendChild(text);
+        return content;
     }
 }
 
@@ -358,10 +349,7 @@ class BucklinVote extends Election {
     performElection() {
         this.iteration = 0;
         this.results = this.calculateResults();
-        this.clearAdditionalStats();
-        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-            document.model.candidates.map((value) => value.party));
-        this.setResultText();
+        this.publishResults();
         if (this.electionOver()) {
             this.setAdditionalStats();
         }
@@ -370,17 +358,14 @@ class BucklinVote extends Election {
     performIteration() {
         this.iteration++;
         this.results = this.calculateResults();
-        this.clearAdditionalStats();
-        this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-            document.model.candidates.map((value) => value.party));
-        this.setResultText();
+        this.publishResults();
         if (this.electionOver()) {
             this.setAdditionalStats();
         }
     }
 
     electionOver() {
-        return this.getWinnerVotes() > this.model.voters.length / 2;
+        return this.getWinnerVotes() > this.majority()
     }
 
     calculateResults() {
@@ -400,10 +385,7 @@ class BucklinVote extends Election {
     }
 
 
-    setResultText() {
-        const text_container = document.getElementById("election-result-text");
-        text_container.innerHTML = '';
-        const text = document.createElement("div");
+    getResultText() {
         let content = "<p>In a <i>Bucklin Voting</i> election, a candidate wins with a majority of the votes. " +
             "Voters give a list of preferences. First all votes with preference 1 are counted, if no majority is achieved, votes with " +
             "preference 2 are added to the vote count and so forth.";
@@ -416,9 +398,7 @@ class BucklinVote extends Election {
                 ". Congratulations! </br> The winner has won with " + this.getWinnerPercentage() + "% of the effective vote.</p>";
             this.setAdditionalStats();
         }
-
-        text.innerHTML = content;
-        text_container.appendChild(text);
+        return content;
     }
 }
 
