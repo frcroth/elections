@@ -43,28 +43,30 @@
         </div>
         <div class="col-sm">
             <button onclick="generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Draw mode
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" onclick="setDrawMode(0)" href="#">Draw Voters</a>
-                    <a class="dropdown-item" onclick="setDrawMode(1)" href="#">Draw candidates</a>
-                </div>
+            <div class="list-group">
+                <a href="#" id="voters-menu-item" class="list-group-item list-group-item-action active"
+                    onclick="setDrawMode(0)">Draw Voters</a>
+                <a href="#" id="candidates-menu-item" class="list-group-item list-group-item-action"
+                    onclick="setDrawMode(1)">Draw candidates</a>
+
             </div>
+
             <h4>Parties</h4>
             <ul id="candidate_list" class="list-group"></ul>
         </div>
         <div class="col-sm">
-            <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post election</button>
-            <button onclick="instantRunoff()" class="btn btn-secondary">Perform instant runoff election</button>
-            <button onclick="bordaCount()" class="btn btn-secondary">Perform Borda count</button>
-            <button onclick="bucklinVote()" class="btn btn-secondary">Perform Bucklin voting</button>
-            <button onclick="condorcetMethod()" class="btn btn-secondary">Perform Pairwise Condorcet election</button>
+            <div class="card">
+                <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post
+                    election</button>
+                <button onclick="instantRunoff()" class="btn btn-secondary">Perform instant runoff election</button>
+                <button onclick="bordaCount()" class="btn btn-secondary">Perform Borda count</button>
+                <button onclick="bucklinVote()" class="btn btn-secondary">Perform Bucklin voting</button>
+                <button onclick="condorcetMethod()" class="btn btn-secondary">Perform Pairwise Condorcet
+                    election</button>
+            </div>
         </div>
         <div class="col-sm">
-            <div id="election-result-text"></div>
+            <div class="card" id="election-result-text"></div>
         </div>
         <div id="election-results" class="col-sm">
             <canvas id="diagram-canvas" width="600" height="400" style="display: block; margin:auto"></canvas>

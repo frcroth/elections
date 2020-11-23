@@ -69,6 +69,17 @@ function addCandidate(canvas, pos) {
 
 function setDrawMode(mode) {
     drawMode = mode;
+    activateDropdownMenu();
+}
+
+function activateDropdownMenu() {
+    if (drawMode === 1) {
+        document.getElementById("voters-menu-item").classList.remove("active");
+        document.getElementById("candidates-menu-item").classList.add("active");
+    } else {
+        document.getElementById("voters-menu-item").classList.add("active");
+        document.getElementById("candidates-menu-item").classList.remove("active");
+    }
 }
 
 function getRandomInteger(min, max) {
