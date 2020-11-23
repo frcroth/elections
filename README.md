@@ -12,7 +12,7 @@ Currently implemented voting mechanisms:
 - [Instant runoff](https://en.wikipedia.org/wiki/Instant-runoff_voting)
 - [Borda count](https://en.wikipedia.org/wiki/Borda_count)
 - [Bucklin voting](https://en.wikipedia.org/wiki/Bucklin_voting#Voting_process)
-
+- [Condorcet method](https://en.wikipedia.org/wiki/Condorcet_method)
 ### Usage
 
 Add voters by clicking into the coordinate system. Add candidates by clicking into the coordinate system and setting the appropriate draw mode.  

@@ -67,6 +67,23 @@ class Model {
         return preferenceMap;
     }
 
+    calculatePreferenceMatrix() {
+        const matrix = new Array(this.candidates.length).fill(0).map(() => new Array(this.candidates.length).fill(0));
+        let preferences = this.calculatePreferences();
+        this.voters.forEach((voter) => {
+            // This runtime is horrendous
+            for (let i = 0; i < this.candidates.length; i++) {
+                for (let j = 0; j < this.candidates.length; j++) {
+                    if (preferences[voter.id].indexOf(i) < preferences[voter.id].indexOf(j)) {
+                        matrix[i][j]++;
+                    }
+                }
+            }
+
+        });
+        return matrix;
+    }
+
     getDissatisfactionList(winner_id) {
         let dissatisfactionMap = this.calculateDissatisfaction(winner_id);
         let dissatisfactions = [];
@@ -97,7 +114,7 @@ class Model {
     calculateDissatisfaction(winner_id) {
         let dissatisfactionMap = {};
         let winner = this.candidates[winner_id];
-        this.voters.forEach((voter) => dissatisfactionMap[voter.id] = this.calculateDistance(voter.pos, winner.pos)/this.getDiagonalLength());
+        this.voters.forEach((voter) => dissatisfactionMap[voter.id] = this.calculateDistance(voter.pos, winner.pos) / this.getDiagonalLength());
         return dissatisfactionMap;
     }
 

@@ -402,10 +402,38 @@ class BucklinVote extends Election {
     }
 }
 
+class CondorcetMethod extends Election {
+    performElection() {
+        this.results = this.calculateResults();
+        this.publishResults();
+    }
+
+    calculateResults() {
+        let preferences = this.model.calculatePreferenceMatrix();
+        let voteCount = [];
+
+        for (let candidate_contests in preferences) {
+            const won_contests = preferences[candidate_contests].reduce((a, b) => a + b, 0);
+            voteCount.push(won_contests);
+        }
+        return voteCount;
+    }
+
+    getResultText() {
+        let content = "<p>In an election using the <i>Condorcet Method</i> all candidates compete against each other in  " +
+            "separate pairwise elections, which are calculated with voter's preferences. However wins the most elections wins the whole election.";
+        content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
+            ". Congratulations!"// </br> The winner has won with " + this.getWinnerPercentage() + "% of the effective vote.</p>";
+        this.setAdditionalStats();
+        return content;
+    }
+}
+
 let ir;
 let bc;
 let buc;
 let fptp;
+let cm;
 
 function firstPastThePost() {
     fptp = new FirstPastThePost();
@@ -437,4 +465,9 @@ function bucklinVote() {
 
 function bucklinIteration() {
     buc.performIteration();
+}
+
+function condorcetMethod() {
+    cm = new CondorcetMethod();
+    cm.performElection();
 }
