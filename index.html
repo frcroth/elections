@@ -29,9 +29,9 @@
         simulations.
         Each person's political views are represented by a position in the coordinate system. This applies to voters and
         candidates.
-    </p>
-    <p>
-        Start by drawing voters and candidates by clicking at the position, or generate random people.
+    </br>
+        Start by drawing voters and candidates by clicking at the position, or generate random people. You can use a
+        preset instead of drawing to get differing results.
         Every voter wants to vote for the candidate that has the closest distance to them. Try out different voting
         systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
         interpreted to result in different winners.</p>
@@ -40,6 +40,18 @@
             <canvas id="political_compass" width="400" height="400">
                 Your browser does not support the HTML canvas tag.
             </canvas>
+            <div>
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Presets
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" onclick="setPreset('the-outlier')" href="#">The outlier</a>
+                        <a class="dropdown-item" onclick="setPreset('the-compromise')" href="#">The compromise</a>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm">
             <button onclick="generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
@@ -66,7 +78,7 @@
             </div>
         </div>
         <div class="col-sm">
-            <div class="card" id="election-result-text"></div>
+            <div id="election-result-text"></div>
         </div>
         <div id="election-results" class="col-sm">
             <canvas id="diagram-canvas" width="600" height="400" style="display: block; margin:auto"></canvas>
@@ -114,6 +126,7 @@
     <script src="js/model.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/elections.js"></script>
+    <script src="js/presets.js"></script>
 </body>
 
 </html>

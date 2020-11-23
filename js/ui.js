@@ -102,7 +102,13 @@ function generateRandomPoints() {
     }
 }
 
+function clearCanvas()  {
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 function readyCanvas() {
+    clearCanvas();
     drawLines(canvas);
 
     canvas.addEventListener('mousedown', function (e) {

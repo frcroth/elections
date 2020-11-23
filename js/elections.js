@@ -64,6 +64,7 @@ class Election {
         const text = document.createElement("div");
         text.innerHTML = resultText;
         text_container.appendChild(text);
+        text_container.classList.add("card");
     }
 
     publishResults() {
