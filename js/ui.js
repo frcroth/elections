@@ -2,23 +2,26 @@
 
 class CoordinateSystem {
 
-    constructor(canvasElementId, size) {
+    constructor(canvasElementId) {
         this.canvas = document.getElementById(canvasElementId);
         this.context = this.canvas.getContext("2d");
-        this.size = size;
+        this.size = this.canvas.width;
+        this.canvas.height = this.canvas.width;
         this.drawMode = 0;
         this.readyCanvas();
         this.model = document.model;
+
+
     }
 
     readyCanvas() {
         this.clearCanvas();
         this.drawLines();
-        if(!this.eventListenerInitialized){
+        if (!this.eventListenerInitialized) {
             this.canvas.addEventListener('mousedown', this.handleMouseClick);
             this.eventListenerInitialized = true;
         }
-        
+
     }
 
     handleMouseClick(event) {
@@ -44,7 +47,8 @@ class CoordinateSystem {
         const rect = this.canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
-        return { x: x / this.size, y: y / this.size };
+        let pos = { x: x / rect.width, y: y / rect.height };
+        return pos;
     }
 
     drawPoint(pos, color) {
@@ -63,10 +67,14 @@ class CoordinateSystem {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    drawCandidatePoint(candidate) {
+        this.drawPoint(candidate.pos, candidate.color);
+    }
+
     addCandidate(pos) {
         let candidate = this.model.addCandidate(pos);
         if (candidate) {
-            this.drawPoint(pos, candidate.color);
+            this.drawCandidatePoint(candidate);
             listCandidates(candidate);
         }
         else {
@@ -75,9 +83,13 @@ class CoordinateSystem {
         return candidate;
     }
 
+    drawVoterPoint(voter) {
+        this.drawPoint(voter.pos, 'grey');
+    }
+
     addVoter(pos) {
-        this.drawPoint(pos, 'grey');
-        this.model.addVoter(pos);
+        let voter = this.model.addVoter(pos);
+        this.drawVoterPoint(voter);
     }
 
     generateRandomPoints() {
@@ -96,12 +108,30 @@ class CoordinateSystem {
         }
     }
 
+    redrawFromModel() {
+        this.readyCanvas();
+        this.model.votersWithoutCandidates.forEach(voter => this.drawVoterPoint(voter));
+        this.model.candidates.forEach(candidate => this.drawCandidatePoint(candidate));
+    }
+
+    onResize() {
+        coordinateSystem.adjustToSize();
+    }
+
+    adjustToSize() {
+        this.container = document.getElementById("coordinate-system-box");
+        this.size = this.container.getBoundingClientRect().width;
+        this.canvas.width = this.size;
+        this.canvas.height = this.size;
+        this.redrawFromModel();
+    }
 
 }
 
 document.model = new Model();
-let coordinateSystem = new CoordinateSystem("coordinate-system", 400);
-
+let coordinateSystem = new CoordinateSystem("coordinate-system");
+$(window).on('resize', coordinateSystem.onResize);
+coordinateSystem.adjustToSize();
 
 function listCandidates() {
     const list = document.getElementById("candidate_list");

@@ -6,7 +6,6 @@ class Model {
         this.MAX_NUMBER_CANDIDATES = 8;
         this.voters = [];
         this.candidates = [];
-        this.coordinate_system_extent = 400;
     }
 
     generateRandomColor() {
@@ -23,11 +22,13 @@ class Model {
     }
 
     addVoter(pos) {
-        this.voters.push({
+        let voter = {
             id: this.voters.length,
             pos: pos
             // Maybe add name, history, ...
-        });
+        };
+        this.voters.push(voter);
+        return voter;
     }
 
     addCandidate(pos) {
@@ -42,7 +43,9 @@ class Model {
         };
         this.candidates.push(candidate);
         // Candidate is also voter
-        this.addVoter(pos);
+        let voter = this.addVoter(pos);
+        voter.isCandidate = true;
+
         return candidate;
     }
 
@@ -107,7 +110,7 @@ class Model {
 
 
     getDiagonalLength() {
-        return Math.sqrt(2 * (this.coordinate_system_extent ** 2));
+        return Math.sqrt(2);
     }
 
     calculateDissatisfaction(winner_id) {
@@ -115,6 +118,10 @@ class Model {
         let winner = this.candidates[winner_id];
         this.voters.forEach((voter) => dissatisfactionMap[voter.id] = this.calculateDistance(voter.pos, winner.pos) / this.getDiagonalLength());
         return dissatisfactionMap;
+    }
+
+    get votersWithoutCandidates() {
+        return this.voters.filter((voter) => !voter.isCandidate)
     }
 
 }

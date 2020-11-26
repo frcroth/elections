@@ -1,5 +1,6 @@
 canvas#coordinate-system {
     border: 1px solid #000000;
+    width: 100%;
 }
 
 div {
@@ -15,8 +16,9 @@ li {
     padding: 1%
 }
 
-#coordinate-system-box {
-    padding: 20px
+#coordinate-system-row {
+    padding: 20px;
+    min-width: 40%;
 }
 
 h1 {

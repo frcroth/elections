@@ -29,17 +29,18 @@
         simulations.
         Each person's political views are represented by a position in the coordinate system. This applies to voters and
         candidates.
-    </br>
+        </br>
         Start by drawing voters and candidates by clicking at the position, or generate random people. You can use a
         preset instead of drawing to get differing results.
         Every voter wants to vote for the candidate that has the closest distance to them. Try out different voting
         systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
         interpreted to result in different winners.</p>
     <div class="row main-row">
-        <div class="col-sm" id="coordinate-system-box">
-            <canvas id="coordinate-system" width="400" height="400">
-                Your browser does not support the HTML canvas tag.
-            </canvas>
+        <div class="col-sm" id="coordinate-system-row">
+            <div id="coordinate-system-box">
+                <canvas id="coordinate-system">
+                    Your browser does not support the HTML canvas tag.
+                </canvas></div>
             <div>
                 <div class="dropdown show">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -55,7 +56,8 @@
             </div>
         </div>
         <div class="col-sm">
-            <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
+            <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate random
+                points</button>
             <div class="list-group">
                 <a href="#" id="voters-menu-item" class="list-group-item list-group-item-action active"
                     onclick="coordinateSystem.setDrawMode(0)">Draw Voters</a>
