@@ -36,8 +36,8 @@
         systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
         interpreted to result in different winners.</p>
     <div class="row main-row">
-        <div class="col-sm" id="compass-box">
-            <canvas id="political_compass" width="400" height="400">
+        <div class="col-sm" id="coordinate-system-box">
+            <canvas id="coordinate-system" width="400" height="400">
                 Your browser does not support the HTML canvas tag.
             </canvas>
             <div>
@@ -55,12 +55,12 @@
             </div>
         </div>
         <div class="col-sm">
-            <button onclick="generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
+            <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate random points</button>
             <div class="list-group">
                 <a href="#" id="voters-menu-item" class="list-group-item list-group-item-action active"
-                    onclick="setDrawMode(0)">Draw Voters</a>
+                    onclick="coordinateSystem.setDrawMode(0)">Draw Voters</a>
                 <a href="#" id="candidates-menu-item" class="list-group-item list-group-item-action"
-                    onclick="setDrawMode(1)">Draw candidates</a>
+                    onclick="coordinateSystem.setDrawMode(1)">Draw candidates</a>
 
             </div>
 

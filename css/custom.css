@@ -1,4 +1,4 @@
-canvas#political_compass {
+canvas#coordinate-system {
     border: 1px solid #000000;
 }
 
@@ -15,7 +15,7 @@ li {
     padding: 1%
 }
 
-#compass-box {
+#coordinate-system-box {
     padding: 20px
 }
 

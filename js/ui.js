@@ -1,48 +1,107 @@
 'use strict';
 
-let canvas = document.getElementById("political_compass");
+class CoordinateSystem {
+
+    constructor(canvasElementId, size) {
+        this.canvas = document.getElementById(canvasElementId);
+        this.context = this.canvas.getContext("2d");
+        this.size = size;
+        this.drawMode = 0;
+        this.readyCanvas();
+        this.model = document.model;
+    }
+
+    readyCanvas() {
+        this.clearCanvas();
+        this.drawLines();
+        if(!this.eventListenerInitialized){
+            this.canvas.addEventListener('mousedown', this.handleMouseClick);
+            this.eventListenerInitialized = true;
+        }
+        
+    }
+
+    handleMouseClick(event) {
+        let pos = coordinateSystem.getCursorPosition(event);
+        if (coordinateSystem.drawMode === 0) {
+            coordinateSystem.addVoter(pos);
+        }
+        if (coordinateSystem.drawMode === 1) {
+            coordinateSystem.addCandidate(pos);
+        }
+    }
+
+    drawLines() {
+        this.context.moveTo(this.size / 2, 0);
+        this.context.lineTo(this.size / 2, this.size);
+        this.context.stroke();
+        this.context.moveTo(0, this.size / 2);
+        this.context.lineTo(this.size, this.size / 2);
+        this.context.stroke();
+    }
+
+    getCursorPosition(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        return { x: x / this.size, y: y / this.size };
+    }
+
+    drawPoint(pos, color) {
+        let circle = new Path2D();
+        circle.arc(pos.x * this.size, pos.y * this.size, this.size / 40, 0, 2 * Math.PI);
+        this.context.fillStyle = color;
+        this.context.fill(circle);
+    }
+
+    setDrawMode(mode) {
+        this.drawMode = mode;
+        activateDropdownMenu();
+    }
+
+    clearCanvas() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    addCandidate(pos) {
+        let candidate = this.model.addCandidate(pos);
+        if (candidate) {
+            this.drawPoint(pos, candidate.color);
+            listCandidates(candidate);
+        }
+        else {
+            alert("Max number of candidates reached");
+        }
+        return candidate;
+    }
+
+    addVoter(pos) {
+        this.drawPoint(pos, 'grey');
+        this.model.addVoter(pos);
+    }
+
+    generateRandomPoints() {
+        if (this.drawMode === 0) {
+            for (let i = 0; i < 10; i++) {
+                this.addVoter({ x: Math.random(), y: Math.random() });
+            }
+        }
+        if (this.drawMode === 1) {
+            for (let i = 0; i < 4; i++) {
+                let candidate = this.addCandidate({ x: Math.random(), y: Math.random() });
+                if (!candidate) {
+                    break;
+                }
+            }
+        }
+    }
+
+
+}
+
 document.model = new Model();
-let drawMode = 0;
+let coordinateSystem = new CoordinateSystem("coordinate-system", 400);
 
-function drawLines(canvas) {
-    let ctx = canvas.getContext("2d");
-    ctx.moveTo(200, 0);
-    ctx.lineTo(200, 400);
-    ctx.stroke();
-    ctx.moveTo(0, 200);
-    ctx.lineTo(400, 200);
-    ctx.stroke();
-}
-
-function getCursorPosition(canvas, event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    return { x: x, y: y };
-}
-
-function drawPoint(canvas, pos, color) {
-    let circle = new Path2D();
-    circle.arc(pos.x, pos.y, 10, 0, 2 * Math.PI);
-    let ctx = canvas.getContext("2d");
-    ctx.fillStyle = color;
-    ctx.fill(circle);
-}
-
-function addVoter(canvas, pos) {
-    drawPoint(canvas, pos, 'grey');
-    document.model.addVoter(pos);
-}
-
-// https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
-function getContrastYIQ(hexcolor) {
-    hexcolor = hexcolor.replace("#", "");
-    const r = parseInt(hexcolor.substr(0, 2), 16);
-    const g = parseInt(hexcolor.substr(2, 2), 16);
-    const b = parseInt(hexcolor.substr(4, 2), 16);
-    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return (yiq >= 128) ? '#000000' : '#FFFFFF';
-}
 
 function listCandidates() {
     const list = document.getElementById("candidate_list");
@@ -55,25 +114,18 @@ function listCandidates() {
     })
 }
 
-function addCandidate(canvas, pos) {
-    let candidate = document.model.addCandidate(pos);
-    if (candidate) {
-        drawPoint(canvas, pos, candidate.color);
-        listCandidates(candidate);
-    }
-    else {
-        alert("Max number of candidates reached");
-    }
-    return candidate;
-}
-
-function setDrawMode(mode) {
-    drawMode = mode;
-    activateDropdownMenu();
+// https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
+function getContrastYIQ(hexColor) {
+    hexColor = hexColor.replace("#", "");
+    const r = parseInt(hexColor.substr(0, 2), 16);
+    const g = parseInt(hexColor.substr(2, 2), 16);
+    const b = parseInt(hexColor.substr(4, 2), 16);
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    return (yiq >= 128) ? '#000000' : '#FFFFFF';
 }
 
 function activateDropdownMenu() {
-    if (drawMode === 1) {
+    if (coordinateSystem.drawMode === 1) {
         document.getElementById("voters-menu-item").classList.remove("active");
         document.getElementById("candidates-menu-item").classList.add("active");
     } else {
@@ -81,47 +133,3 @@ function activateDropdownMenu() {
         document.getElementById("candidates-menu-item").classList.remove("active");
     }
 }
-
-function getRandomInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function generateRandomPoints() {
-    if (drawMode === 0) {
-        for (let i = 0; i < 10; i++) {
-            addVoter(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) });
-        }
-    }
-    if (drawMode === 1) {
-        for (let i = 0; i < 4; i++) {
-            let candidate = addCandidate(canvas, { x: getRandomInteger(0, 400), y: getRandomInteger(0, 400) });
-            if (!candidate) {
-                break;
-            }
-        }
-    }
-}
-
-function clearCanvas()  {
-    const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function readyCanvas() {
-    clearCanvas();
-    drawLines(canvas);
-
-    canvas.addEventListener('mousedown', function (e) {
-        let pos = getCursorPosition(canvas, e);
-        if (drawMode === 0) {
-            addVoter(canvas, pos);
-        }
-        if (drawMode === 1) {
-            addCandidate(canvas, pos);
-        }
-
-    })
-
-}
-
-readyCanvas();

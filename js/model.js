@@ -40,7 +40,6 @@ class Model {
             color: this.generateRandomColor(),
             party: this.generateRandomPartyName()
         };
-        console.log(candidate.party);
         this.candidates.push(candidate);
         // Candidate is also voter
         this.addVoter(pos);
