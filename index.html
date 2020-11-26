@@ -43,14 +43,16 @@
                 </canvas></div>
             <div>
                 <div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary dropdown-toggle" href='javascript:void();' role="button"
+                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Presets
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" onclick="setPreset('the-outlier')" href="#">The outlier</a>
-                        <a class="dropdown-item" onclick="setPreset('the-compromise')" href="#">The compromise</a>
-                        <a class="dropdown-item" onclick="setPreset('balance')" href="#">Balance</a>
+                        <a class="dropdown-item" onclick="setPreset('the-outlier')" href='javascript:void(0);'>The
+                            outlier</a>
+                        <a class="dropdown-item" onclick="setPreset('the-compromise')" href='javascript:void(0);'>The
+                            compromise</a>
+                        <a class="dropdown-item" onclick="setPreset('balance')" href='javascript:void(0);'>Balance</a>
                     </div>
                 </div>
             </div>
@@ -59,9 +61,10 @@
             <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate random
                 points</button>
             <div class="list-group">
-                <a href="#" id="voters-menu-item" class="list-group-item list-group-item-action active"
-                    onclick="coordinateSystem.setDrawMode(0)">Draw Voters</a>
-                <a href="#" id="candidates-menu-item" class="list-group-item list-group-item-action"
+                <a href='javascript:void(0);' id="voters-menu-item"
+                    class="list-group-item list-group-item-action active" onclick="coordinateSystem.setDrawMode(0)">Draw
+                    Voters</a>
+                <a href='javascript:void(0);' id="candidates-menu-item" class="list-group-item list-group-item-action"
                     onclick="coordinateSystem.setDrawMode(1)">Draw candidates</a>
 
             </div>
