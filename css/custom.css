@@ -1,6 +1,5 @@
-canvas#coordinate-system {
-    border: 1px solid #000000;
-    width: 100%;
+* {
+    font-family: 'Lato', sans-serif;
 }
 
 div {
@@ -9,16 +8,6 @@ div {
 
 li {
     list-style-type: none
-}
-
-.party-container {
-    width: max-content;
-    padding: 1%
-}
-
-#coordinate-system-row {
-    padding: 20px;
-    min-width: 40%;
 }
 
 h1 {
@@ -31,6 +20,21 @@ h4 {
 
 p {
     padding: 5px
+}
+
+canvas#coordinate-system {
+    border: 1px solid #000000;
+    width: 100%;
+}
+
+.party-container {
+    width: max-content;
+    padding: 1%
+}
+
+#coordinate-system-row {
+    padding: 20px;
+    min-width: 40%;
 }
 
 .main-row {
@@ -61,6 +65,10 @@ p {
 
 #additional-results {
     padding: 20px
+}
+
+#election-results {
+    min-width: 30%;
 }
 
 .quote {

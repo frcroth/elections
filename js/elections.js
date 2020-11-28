@@ -34,7 +34,7 @@ class Election {
 
             },
             options: {
-                responsive: false,
+                // responsive: true,
                 scales: {
                     yAxes: [{
                         ticks: {

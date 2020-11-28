@@ -9,10 +9,16 @@
     <meta name="description" content="Simulating Elections">
     <meta name="author" content="frcroth">
 
-    <link rel="stylesheet" href="css/custom.css">
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
 </head>
 
@@ -25,6 +31,7 @@
             <q class="quote ">I consider it completely unimportant who in the party will vote, or how; but
                 what is extraordinarily important is this — who will count the votes, and how.</q> - Stalin</div>
     </div>
+    <hr />
     <p> This is the political coordinate system. While a crude model to depict real politics, it will suffice for our
         simulations.
         Each person's political views are represented by a position in the coordinate system. This applies to voters and
@@ -35,6 +42,7 @@
         Every voter wants to vote for the candidate that has the closest distance to them. Try out different voting
         systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
         interpreted to result in different winners.</p>
+    <hr />
     <div class="row main-row">
         <div class="col-sm" id="coordinate-system-row">
             <div id="coordinate-system-box">
@@ -71,8 +79,6 @@
 
             <h4>Parties</h4>
             <ul id="candidate_list" class="list-group"></ul>
-        </div>
-        <div class="col-sm">
             <div class="card">
                 <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post
                     election</button>
@@ -85,17 +91,18 @@
         </div>
         <div class="col-sm">
             <div id="election-result-text"></div>
+            <div id="election-results" class="card">
+                <canvas id="diagram-canvas" width="600" height="400" style="display: block; margin:auto"></canvas>
+            </div>
         </div>
-        <div id="election-results" class="col-sm">
-            <canvas id="diagram-canvas" width="600" height="400" style="display: block; margin:auto"></canvas>
-        </div>
+
         <div id="additional-results" class="col-m"></div>
     </div>
-
+    <hr />
     <p>This system assumes that each voter votes exactly for the candidate that is closest to their positions. It also
         assumes that voters fill out ballots with all possible alternatives.</p>
-
-
+    <hr />
+    <div>&nbsp;</div>
 
     <footer class="footer">
         <div class="row">
