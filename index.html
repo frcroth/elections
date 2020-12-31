@@ -29,7 +29,8 @@
         </div>
         <div class="col-sm" id="quote-box">
             <q class="quote ">I consider it completely unimportant who in the party will vote, or how; but
-                what is extraordinarily important is this — who will count the votes, and how.</q> - Stalin</div>
+                what is extraordinarily important is this — who will count the votes, and how.</q> - Stalin
+        </div>
     </div>
     <hr />
     <p> This is the political coordinate system. While a crude model to depict real politics, it will suffice for our
@@ -48,37 +49,47 @@
             <div id="coordinate-system-box">
                 <canvas id="coordinate-system">
                     Your browser does not support the HTML canvas tag.
-                </canvas></div>
+                </canvas>
+            </div>
             <div>
-                <div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" href='javascript:void();' role="button"
-                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Presets
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" onclick="setPreset('the-outlier')" href='javascript:void(0);'>The
-                            outlier</a>
-                        <a class="dropdown-item" onclick="setPreset('the-compromise')" href='javascript:void(0);'>The
-                            compromise</a>
-                        <a class="dropdown-item" onclick="setPreset('balance')" href='javascript:void(0);'>Balance</a>
+                <p>Add points: Voters and candidates</p>
+                <div class="row" style="margin: auto;">
+                    <div class="list-group">
+                        <a href='javascript:void(0);' id="voters-menu-item"
+                            class="list-group-item list-group-item-action active"
+                            onclick="coordinateSystem.setDrawMode(0)">Draw
+                            Voters</a>
+                        <a href='javascript:void(0);' id="candidates-menu-item"
+                            class="list-group-item list-group-item-action"
+                            onclick="coordinateSystem.setDrawMode(1)">Draw candidates</a>
+
+                    </div>
+                    <div>
+                        <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate
+                            random
+                            points</button>
+                    </div>
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary dropdown-toggle" href='javascript:void();' role="button"
+                            id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Presets
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" onclick="setPreset('the-outlier')" href='javascript:void(0);'>The
+                                outlier</a>
+                            <a class="dropdown-item" onclick="setPreset('the-compromise')"
+                                href='javascript:void(0);'>The
+                                compromise</a>
+                            <a class="dropdown-item" onclick="setPreset('balance')"
+                                href='javascript:void(0);'>Balance</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-sm">
-            <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate random
-                points</button>
-            <div class="list-group">
-                <a href='javascript:void(0);' id="voters-menu-item"
-                    class="list-group-item list-group-item-action active" onclick="coordinateSystem.setDrawMode(0)">Draw
-                    Voters</a>
-                <a href='javascript:void(0);' id="candidates-menu-item" class="list-group-item list-group-item-action"
-                    onclick="coordinateSystem.setDrawMode(1)">Draw candidates</a>
-
-            </div>
-
             <h4>Parties</h4>
-            <ul id="candidate_list" class="list-group"></ul>
+            <div id="candidate_list" class="row"></div>
             <div class="card">
                 <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post
                     election</button>
@@ -107,7 +118,8 @@
     <footer class="footer">
         <div class="row">
             <div class="col-sm">
-                <span class="text-muted">Election simulation by <a href="http://frcroth.de">frcroth</a></span></div>
+                <span class="text-muted">Election simulation by <a href="http://frcroth.de">frcroth</a></span>
+            </div>
             <div class="col-s">
                 <span class="text-muted">See <a href="http://github.com/frcroth/elections">code</a></span>
             </div>

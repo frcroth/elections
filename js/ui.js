@@ -137,10 +137,15 @@ function listCandidates() {
     const list = document.getElementById("candidate_list");
     list.innerHTML = '';
     document.model.candidates.forEach((candidate) => {
-        let list_item = document.createElement("li");
-        list_item.innerHTML = "<div class=\"party-container\" style=\"background-color: " + candidate.color
-            + "; color: " + getContrastYIQ(candidate.color) + ";\">" + candidate.party + "</div>";
-        list.appendChild(list_item);
+        let listItemContainer = document.createElement("div");
+        listItemContainer.classList.add("col-sm");
+        listItemContainer.classList.add("party-container");
+        listItemContainer.style["background-color"] = candidate.color;
+        listItemContainer.style["color"] = getContrastYIQ(candidate.color);
+        let listItem = document.createElement("p");
+        listItem.innerHTML = candidate.party;
+        listItemContainer.appendChild(listItem)
+        list.appendChild(listItemContainer);
     })
 }
 
