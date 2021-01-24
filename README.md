@@ -21,4 +21,4 @@ Select a Voting mechanism and look at the results.
 
 ### Deployment
 
-All Javascript is client side so no special server is required. Just clone the repository and open index.html in a browser. Tested in Mozilla Firefox 82.
+All Javascript is client side so no special server is required. Just clone the repository and open index.html in a browser. Tested in Mozilla Firefox 84.

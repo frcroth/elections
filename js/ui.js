@@ -136,6 +136,7 @@ class ElectionSimulation {
         this.centralColumn = document.getElementById('central-column')
         this.electionMode = "one-seat";
         this.build();
+        this.initModeSelector();
         document.electionSimulation = this;
     }
 
@@ -143,7 +144,6 @@ class ElectionSimulation {
         this.centralColumn.innerHTML = "";
 
         this.headline = document.createElement('h4');
-        this.headline.innerHTML = "Parties";
         this.centralColumn.appendChild(this.headline);
 
         this.candidateList = document.createElement('div');
@@ -158,13 +158,38 @@ class ElectionSimulation {
         this.buildElectionOptions(this.electionOptions);
     }
 
+    initModeSelector() {
+        this.oneSeatRadio = document.getElementById("one-seat-radio");
+        this.oneSeatRadio.onchange = () => this.setMode();
+
+        this.multiSeatRadio = document.getElementById("multi-seat-radio");
+        this.multiSeatRadio.onchange = () => this.setMode();
+    }
+
+    setMode() {
+        if(this.multiSeatRadio.checked){
+            this.electionMode = "multi-seat";
+        }
+        else {
+            this.electionMode = "one-seat";
+        }
+        this.buildElectionOptions(this.electionOptions);
+    }
+
     buildElectionOptions(node) {
+        node.innerHTML = "";
         if (this.electionMode == "one-seat") {
+            this.headline.innerHTML = "Candidates";
             this.buildOneSeatElectionOptions(node);
+        }
+        else {
+            this.headline.innerHTML = "Parties";
+            this.buildMultiSeatElectionOptions(node);
         }
     }
 
     buildOneSeatElectionOptions(node) {
+
         this.firstPastThePost = document.createElement("button");
         this.firstPastThePost.onclick = () => this.performFirstPastThePost();
         this.firstPastThePost.classList.add("btn", "btn-secondary");
@@ -194,6 +219,10 @@ class ElectionSimulation {
         this.condorcetMethod.classList.add("btn", "btn-secondary");
         this.condorcetMethod.innerHTML = "Perform pairwise condorcet";
         node.appendChild(this.condorcetMethod);
+    }
+
+    buildMultiSeatElectionOptions() {
+
     }
 
     performFirstPastThePost() {
