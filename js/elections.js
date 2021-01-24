@@ -216,7 +216,7 @@ class FirstPastThePost extends Election {
       content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
         ". Congratulations! </br> The winner has won with " + this.getWinnerPercentage() + "% of the vote.</p>";
     }
-    let runOffButton = "<button onclick=\"performRunOff()\" class=\"btn btn-secondary\">Perform a runoff election</button>";
+    let runOffButton = "<button onclick=\"document.electionSimulation.performRunOff()\" class=\"btn btn-secondary\">Perform a runoff election</button>";
 
     content += runOffButton;
     content += "<div id=\"runoff-text\"></div>";
@@ -300,7 +300,7 @@ class InstantRunoff extends Election {
       "If no majority is achieved, the candidate with the fewest votes is eliminated and the votes go to the candidate that is preferred next.";
     if (!this.electionOver()) {
       content += "</br> There is no winner yet. Iteration " + this.iteration + "</p>";
-      let iterationButton = "<button onclick=\"instantRunoffIteration()\" class=\"btn btn-secondary\">Iterate instant runoff</button>";
+      let iterationButton = "<button onclick=\"document.electionSimulation.performInstantRunoffIteration()\" class=\"btn btn-secondary\">Iterate instant runoff</button>";
       content += iterationButton;
     } else {
       content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
@@ -392,7 +392,7 @@ class BucklinVote extends Election {
       "preference 2 are added to the vote count and so forth.";
     if (!this.electionOver()) {
       content += "</br> There is no winner yet. Iteration " + this.iteration + ".</p>";
-      let iterationButton = "<button onclick=\"bucklinIteration()\" class=\"btn btn-secondary\">Count votes of next preference</button>";
+      let iterationButton = "<button onclick=\"document.electionSimulation.performBucklinIteration()\" class=\"btn btn-secondary\">Count votes of next preference</button>";
       content += iterationButton;
     } else {
       content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
@@ -428,47 +428,4 @@ class CondorcetMethod extends Election {
     this.setAdditionalStats();
     return content;
   }
-}
-
-let ir;
-let bc;
-let buc;
-let fptp;
-let cm;
-
-function firstPastThePost() {
-  fptp = new FirstPastThePost();
-  fptp.performElection();
-}
-
-function performRunOff() {
-  fptp.performRunOffElection();
-}
-
-function instantRunoff() {
-  ir = new InstantRunoff();
-  ir.performElection();
-}
-
-function instantRunoffIteration() {
-  ir.performIteration();
-}
-
-function bordaCount() {
-  bc = new BordaCount();
-  bc.performElection();
-}
-
-function bucklinVote() {
-  buc = new BucklinVote();
-  buc.performElection();
-}
-
-function bucklinIteration() {
-  buc.performIteration();
-}
-
-function condorcetMethod() {
-  cm = new CondorcetMethod();
-  cm.performElection();
 }

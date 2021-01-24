@@ -47,11 +47,11 @@
     <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" id="oneSeatRadio" name="multiOneSeatRadio" class="custom-control-input" checked="true">
         <label class="custom-control-label" for="oneSeatRadio">One seat</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
+    </div>
+    <div class="custom-control custom-radio custom-control-inline">
         <input type="radio" id="multiSeatRadio" name="multiOneSeatRadio" class="custom-control-input">
         <label class="custom-control-label" for="multiSeatRadio">Multiple seats</label>
-      </div>
+    </div>
     <hr />
     <div class="row main-row">
         <div class="col-sm" id="coordinate-system-row">
@@ -96,18 +96,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm">
-            <h4>Parties</h4>
-            <div id="candidate_list" class="row"></div>
-            <div class="card">
-                <button onclick="firstPastThePost()" class="btn btn-secondary">Perform first past the post
-                    election</button>
-                <button onclick="instantRunoff()" class="btn btn-secondary">Perform instant runoff election</button>
-                <button onclick="bordaCount()" class="btn btn-secondary">Perform Borda count</button>
-                <button onclick="bucklinVote()" class="btn btn-secondary">Perform Bucklin voting</button>
-                <button onclick="condorcetMethod()" class="btn btn-secondary">Perform Pairwise Condorcet
-                    election</button>
-            </div>
+        <div class="col-sm" id="central-column">
         </div>
         <div class="col-sm">
             <div id="election-result-text"></div>
@@ -136,7 +125,6 @@
     </footer>
 
 
-
     <!-- BOOTSTRAP -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -158,8 +146,8 @@
 
     <!-- Custom Scripts-->
     <script src="js/model.js"></script>
-    <script src="js/ui.js"></script>
     <script src="js/elections.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/multi-seat-election.js"></script>
     <script src="js/presets.js"></script>
 </body>

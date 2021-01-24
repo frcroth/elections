@@ -75,7 +75,7 @@ class CoordinateSystem {
         let candidate = this.model.addCandidate(pos);
         if (candidate) {
             this.drawCandidatePoint(candidate);
-            listCandidates(candidate);
+            document.electionSimulation.updateCandidateList();
         }
         else {
             alert("Max number of candidates reached");
@@ -129,25 +129,132 @@ class CoordinateSystem {
 }
 
 document.model = new Model();
+
+class ElectionSimulation {
+
+    constructor() {
+        this.centralColumn = document.getElementById('central-column')
+        this.electionMode = "one-seat";
+        this.build();
+        document.electionSimulation = this;
+    }
+
+    build() {
+        this.centralColumn.innerHTML = "";
+
+        this.headline = document.createElement('h4');
+        this.headline.innerHTML = "Parties";
+        this.centralColumn.appendChild(this.headline);
+
+        this.candidateList = document.createElement('div');
+        this.candidateList.id = "candidate-list";
+        this.candidateList.classList.add("row");
+        this.centralColumn.appendChild(this.candidateList);
+
+        this.electionOptions = document.createElement('div');
+        this.electionOptions.classList.add("card");
+        this.centralColumn.appendChild(this.electionOptions);
+
+        this.buildElectionOptions(this.electionOptions);
+    }
+
+    buildElectionOptions(node) {
+        if (this.electionMode == "one-seat") {
+            this.buildOneSeatElectionOptions(node);
+        }
+    }
+
+    buildOneSeatElectionOptions(node) {
+        this.firstPastThePost = document.createElement("button");
+        this.firstPastThePost.onclick = () => this.performFirstPastThePost();
+        this.firstPastThePost.classList.add("btn", "btn-secondary");
+        this.firstPastThePost.innerHTML = "Perform first past the post election";
+        node.appendChild(this.firstPastThePost);
+
+        this.instantRunoff = document.createElement("button");
+        this.instantRunoff.onclick = () => this.performInstantRunoff();
+        this.instantRunoff.classList.add("btn", "btn-secondary");
+        this.instantRunoff.innerHTML = "Perform instant runoff election";
+        node.appendChild(this.instantRunoff);
+
+        this.bordaCount = document.createElement("button");
+        this.bordaCount.onclick = () => this.performBordaCount();
+        this.bordaCount.classList.add("btn", "btn-secondary");
+        this.bordaCount.innerHTML = "Perform Borda count";
+        node.appendChild(this.bordaCount);
+
+        this.bucklinVote = document.createElement("button");
+        this.bucklinVote.onclick = () => this.performBucklinVote();
+        this.bucklinVote.classList.add("btn", "btn-secondary");
+        this.bucklinVote.innerHTML = "Perform Bucklin vote";
+        node.appendChild(this.bucklinVote);
+
+        this.condorcetMethod = document.createElement("button");
+        this.condorcetMethod.onclick = () => this.performCondorcet();
+        this.condorcetMethod.classList.add("btn", "btn-secondary");
+        this.condorcetMethod.innerHTML = "Perform pairwise condorcet";
+        node.appendChild(this.condorcetMethod);
+    }
+
+    performFirstPastThePost() {
+        this.fptp = new FirstPastThePost();
+        this.fptp.performElection();
+    }
+
+    performInstantRunoff() {
+        this.ir = new InstantRunoff();
+        this.ir.performElection();
+    }
+
+    performBordaCount() {
+        this.bc = new BordaCount();
+        this.bc.performElection();
+    }
+
+    performBucklinVote() {
+        this.buc = new BucklinVote();
+        this.buc.performElection();
+    }
+
+    performCondorcet() {
+        this.cm = new CondorcetMethod();
+        this.cm.performElection();
+    }
+
+    performRunOff() {
+        this.fptp.performRunOffElection();
+    }
+
+    performInstantRunoffIteration() {
+        this.ir.performIteration();
+    }
+
+    performBucklinIteration() {
+        this.buc.performIteration();
+    }
+
+    updateCandidateList() {
+        const list = this.candidateList;
+        list.innerHTML = '';
+        document.model.candidates.forEach((candidate) => {
+            let listItemContainer = document.createElement("div");
+            listItemContainer.classList.add("col-sm");
+            listItemContainer.classList.add("party-container");
+            listItemContainer.style["background-color"] = candidate.color;
+            listItemContainer.style["color"] = getContrastYIQ(candidate.color);
+            let listItem = document.createElement("p");
+            listItem.innerHTML = candidate.party;
+            listItemContainer.appendChild(listItem)
+            list.appendChild(listItemContainer);
+        })
+    }
+}
+
+
 let coordinateSystem = new CoordinateSystem("coordinate-system");
 $(window).on('resize', coordinateSystem.onResize);
 coordinateSystem.adjustToSize();
-
-function listCandidates() {
-    const list = document.getElementById("candidate_list");
-    list.innerHTML = '';
-    document.model.candidates.forEach((candidate) => {
-        let listItemContainer = document.createElement("div");
-        listItemContainer.classList.add("col-sm");
-        listItemContainer.classList.add("party-container");
-        listItemContainer.style["background-color"] = candidate.color;
-        listItemContainer.style["color"] = getContrastYIQ(candidate.color);
-        let listItem = document.createElement("p");
-        listItem.innerHTML = candidate.party;
-        listItemContainer.appendChild(listItem)
-        list.appendChild(listItemContainer);
-    })
-}
+let electionSimulation = new ElectionSimulation();
 
 // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
 function getContrastYIQ(hexColor) {
