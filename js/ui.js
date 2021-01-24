@@ -10,8 +10,6 @@ class CoordinateSystem {
         this.drawMode = 0;
         this.readyCanvas();
         this.model = document.model;
-
-
     }
 
     readyCanvas() {
@@ -132,12 +130,15 @@ document.model = new Model();
 
 class ElectionSimulation {
 
-    constructor() {
+    constructor(coordinateSystem) {
+        this.coordinateSystem = coordinateSystem;
+        this.model = document.model;
         this.centralColumn = document.getElementById('central-column')
         this.electionMode = "one-seat";
         this.build();
         this.initModeSelector();
         document.electionSimulation = this;
+        this.seatCount = 5;
     }
 
     build() {
@@ -167,7 +168,7 @@ class ElectionSimulation {
     }
 
     setMode() {
-        if(this.multiSeatRadio.checked){
+        if (this.multiSeatRadio.checked) {
             this.electionMode = "multi-seat";
         }
         else {
@@ -221,8 +222,12 @@ class ElectionSimulation {
         node.appendChild(this.condorcetMethod);
     }
 
-    buildMultiSeatElectionOptions() {
-
+    buildMultiSeatElectionOptions(node) {
+        this.singleNonTransferrableVote = document.createElement("button");
+        this.singleNonTransferrableVote.onclick = () => this.performSNTV();
+        this.singleNonTransferrableVote.classList.add("btn", "btn-secondary");
+        this.singleNonTransferrableVote.innerHTML = "Perform single non transferrable vote";
+        node.appendChild(this.singleNonTransferrableVote);
     }
 
     performFirstPastThePost() {
@@ -262,6 +267,13 @@ class ElectionSimulation {
         this.buc.performIteration();
     }
 
+    // Multi Seat Elections
+
+    performSNTV() {
+        this.sntv = new SingleNonTransferableVote(this.seatCount);
+        this.sntv.performElection();
+    }
+
     updateCandidateList() {
         const list = this.candidateList;
         list.innerHTML = '';
@@ -277,13 +289,21 @@ class ElectionSimulation {
             list.appendChild(listItemContainer);
         })
     }
+
+    resetModel() {
+        document.model = new Model();
+        coordinateSystem.model = document.model;
+        this.model = document.model;
+        this.updateCandidateList();
+        coordinateSystem.readyCanvas();
+    }
 }
 
 
 let coordinateSystem = new CoordinateSystem("coordinate-system");
 $(window).on('resize', coordinateSystem.onResize);
 coordinateSystem.adjustToSize();
-let electionSimulation = new ElectionSimulation();
+let electionSimulation = new ElectionSimulation(coordinateSystem);
 
 // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
 function getContrastYIQ(hexColor) {
