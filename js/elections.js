@@ -30,8 +30,6 @@ class Election {
           backgroundColor: colors
         }],
         labels: labels,
-
-
       },
       options: {
         // responsive: true,
