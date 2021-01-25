@@ -162,6 +162,7 @@ class ElectionSimulation {
     initModeSelector() {
         this.oneSeatRadio = document.getElementById("one-seat-radio");
         this.oneSeatRadio.onchange = () => this.setMode();
+        this.oneSeatRadio.checked = true;
 
         this.multiSeatRadio = document.getElementById("multi-seat-radio");
         this.multiSeatRadio.onchange = () => this.setMode();
@@ -223,6 +224,12 @@ class ElectionSimulation {
     }
 
     buildMultiSeatElectionOptions(node) {
+        this.sainteLagueVote = document.createElement("button");
+        this.sainteLagueVote.onclick = () => this.performSL();
+        this.sainteLagueVote.classList.add("btn", "btn-secondary");
+        this.sainteLagueVote.innerHTML = "Sainte-Laguë method";
+        node.appendChild(this.sainteLagueVote);
+
         this.singleNonTransferrableVote = document.createElement("button");
         this.singleNonTransferrableVote.onclick = () => this.performSNTV();
         this.singleNonTransferrableVote.classList.add("btn", "btn-secondary");
@@ -272,6 +279,11 @@ class ElectionSimulation {
     performSNTV() {
         this.sntv = new SingleNonTransferableVote(this.seatCount);
         this.sntv.performElection();
+    }
+
+    performSL() {
+        this.saintelague = new SainteLaguëVote(this.seatCount);
+        this.saintelague.performElection();
     }
 
     updateCandidateList() {

@@ -67,8 +67,8 @@ class Election {
 
   publishResults() {
     this.clearAdditionalStats()
-    this.drawDiagram(this.results, document.model.candidates.map((value) => value.color),
-      document.model.candidates.map((value) => value.party));
+    this.drawDiagram(this.results, document.model.candidates.map(value => value.color),
+      document.model.candidates.map(value => value.party));
     this.setResultText(this.getResultText());
   }
 
