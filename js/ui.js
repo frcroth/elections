@@ -230,10 +230,16 @@ class ElectionSimulation {
         this.sainteLagueVote.innerHTML = "Sainte-Laguë method";
         node.appendChild(this.sainteLagueVote);
 
+        this.largestRemainder = document.createElement("button");
+        this.largestRemainder.onclick = () => this.performLRM();
+        this.largestRemainder.classList.add("btn", "btn-secondary");
+        this.largestRemainder.innerHTML = "Largest remainder method";
+        node.appendChild(this.largestRemainder);
+
         this.singleNonTransferrableVote = document.createElement("button");
         this.singleNonTransferrableVote.onclick = () => this.performSNTV();
         this.singleNonTransferrableVote.classList.add("btn", "btn-secondary");
-        this.singleNonTransferrableVote.innerHTML = "Perform single non transferrable vote";
+        this.singleNonTransferrableVote.innerHTML = "Individual candidates";
         node.appendChild(this.singleNonTransferrableVote);
     }
 
@@ -284,6 +290,11 @@ class ElectionSimulation {
     performSL() {
         this.saintelague = new SainteLaguëVote(this.seatCount);
         this.saintelague.performElection();
+    }
+
+    performLRM() {
+        this.largestRemainder = new LargestRemainder(this.seatCount, "droop");
+        this.largestRemainder.performElection();
     }
 
     updateCandidateList() {

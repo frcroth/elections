@@ -24,7 +24,7 @@ class MultiSeatElection {
         let resultsPerParty = this.getSeatsPerParty(results);
         this.model.candidates.forEach((candidate) => {
             resultText += "<tr><td>" + candidate.party + "</td><td>" +
-             resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td></tr>";
+                resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td><td>" + Math.round((preferences[candidate.id]/this.model.voters.length)*100)+ "%</td></tr>" ;
         })
         resultText += "</table>";
         this.resultContainer.innerHTML = '';
@@ -101,13 +101,54 @@ class SainteLaguëVote extends MultiSeatElection {
         // For each seat, choose party with highest quotient
         // Recalculate quotient
         for (let i = 0; i < this.seatNumber; i++) {
-            const sorted_parties = Object.values(values).sort((a,b) => (b.quotient - a.quotient))
+            const sorted_parties = Object.values(values).sort((a, b) => (b.quotient - a.quotient))
             const next_seat = sorted_parties[0].id;
             result.push(next_seat);
             values[next_seat].allocated_seats++;
             values[next_seat].quotient = values[next_seat].votes /
-            (2 * values[next_seat].allocated_seats + 1);
+                (2 * values[next_seat].allocated_seats + 1);
         }
         return result;
+    }
+}
+
+class LargestRemainder extends MultiSeatElection {
+
+    constructor(seatNumber, quotaName) {
+        super(seatNumber);
+        this.quotaName = quotaName;
+    }
+
+    getQuota(quota) {
+        if (quota == "hare") {
+            return (votes, seats) => (votes / seats);
+        }
+        if (quota == "droop") {
+            return (votes, seats) => (1 + (votes / (1 + seats)));
+        }
+        if (quota == "hb") {
+            return (votes, seats) => (votes / (1 + seats));
+        }
+        if (quota == "imperiali") {
+            return (votes, seats) => (votes / (2 + seats))
+        }
+    }
+
+    getResults() {
+        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let remainders = {};
+        let result = [];
+        let quota = (this.getQuota(this.quotaName))(this.model.voters.length, this.seatNumber);
+        this.model.candidates.forEach((candidate) => {
+            let votesPerQuota = firstPreferences[candidate.id]/quota;
+            let guaranteedSeats = Array(Math.floor(votesPerQuota)).fill(candidate.id);
+            result.push(...guaranteedSeats);
+            remainders[candidate.id] = votesPerQuota - Math.floor(votesPerQuota);
+        });
+        let sortedRemainders = Object.entries(remainders).sort((a,b) => b[1] - a[1]);
+        sortedRemainders.forEach(remainderPair => {
+            result.push(parseInt(remainderPair[0]));
+        })
+        return result.slice(0, this.seatNumber);
     }
 }
