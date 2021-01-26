@@ -230,11 +230,17 @@ class ElectionSimulation {
         this.sainteLagueVote.innerHTML = "Sainte-Laguë method";
         node.appendChild(this.sainteLagueVote);
 
-        this.largestRemainder = document.createElement("button");
-        this.largestRemainder.onclick = () => this.performLRM();
-        this.largestRemainder.classList.add("btn", "btn-secondary");
-        this.largestRemainder.innerHTML = "Largest remainder method";
-        node.appendChild(this.largestRemainder);
+        this.largestRemainderD = document.createElement("button");
+        this.largestRemainderD.onclick = () => this.performLRM("droop");
+        this.largestRemainderD.classList.add("btn", "btn-secondary");
+        this.largestRemainderD.innerHTML = "Largest remainder method (Droop)";
+        node.appendChild(this.largestRemainderD);
+
+        this.largestRemainderI = document.createElement("button");
+        this.largestRemainderI.onclick = () => this.performLRM("imperiali");
+        this.largestRemainderI.classList.add("btn", "btn-secondary");
+        this.largestRemainderI.innerHTML = "Largest remainder method (Imperiali)";
+        node.appendChild(this.largestRemainderI);
 
         this.singleNonTransferrableVote = document.createElement("button");
         this.singleNonTransferrableVote.onclick = () => this.performSNTV();
@@ -292,8 +298,8 @@ class ElectionSimulation {
         this.saintelague.performElection();
     }
 
-    performLRM() {
-        this.largestRemainder = new LargestRemainder(this.seatCount, "droop");
+    performLRM(quotaName) {
+        this.largestRemainder = new LargestRemainder(this.seatCount, quotaName);
         this.largestRemainder.performElection();
     }
 
