@@ -16,6 +16,7 @@ Currently implemented voting mechanisms:
 For multiple seats:
 - [Sainte-Laguë method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method) 
 - [Largest Remainder method](https://en.wikipedia.org/wiki/Largest_remainder_method) with different quotas
+- [D'Hondt method](https://en.wikipedia.org/wiki/D%27Hondt_method)
 - Individual candidates
 ### Usage
 

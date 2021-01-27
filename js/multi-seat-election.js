@@ -24,7 +24,7 @@ class MultiSeatElection {
         let resultsPerParty = this.getSeatsPerParty(results);
         this.model.candidates.forEach((candidate) => {
             resultText += "<tr><td>" + candidate.party + "</td><td>" +
-                resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td><td>" + Math.round((preferences[candidate.id]/this.model.voters.length)*100)+ "%</td></tr>" ;
+                resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td><td>" + Math.round((preferences[candidate.id] / this.model.voters.length) * 100) + "%</td></tr>";
         })
         resultText += "</table>";
         this.resultContainer.innerHTML = '';
@@ -139,16 +139,45 @@ class LargestRemainder extends MultiSeatElection {
         let remainders = {};
         let result = [];
         let quota = (this.getQuota(this.quotaName))(this.model.voters.length, this.seatNumber);
-        this.model.candidates.forEach((candidate) => {
-            let votesPerQuota = firstPreferences[candidate.id]/quota;
+        this.model.candidates.forEach(candidate => {
+            let votesPerQuota = firstPreferences[candidate.id] / quota;
             let guaranteedSeats = Array(Math.floor(votesPerQuota)).fill(candidate.id);
             result.push(...guaranteedSeats);
             remainders[candidate.id] = votesPerQuota - Math.floor(votesPerQuota);
         });
-        let sortedRemainders = Object.entries(remainders).sort((a,b) => b[1] - a[1]);
+        let sortedRemainders = Object.entries(remainders).sort((a, b) => b[1] - a[1]);
         sortedRemainders.forEach(remainderPair => {
             result.push(parseInt(remainderPair[0]));
         })
         return result.slice(0, this.seatNumber);
+    }
+}
+
+class Dhondt extends MultiSeatElection {
+
+    calculateQuotient(party) {
+        party.quotient = party.votes / (party.seats + 1);
+    }
+
+    getResults() {
+        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+
+        let partyObjects = this.model.candidates.map(candidate => {
+            return {
+                votes: firstPreferences[candidate.id],
+                seats: 0,
+                id: candidate.id
+            }
+        });
+        partyObjects.forEach(party => this.calculateQuotient(party));
+        let result = [];
+        for (let i = 0; i < this.seatNumber; i++) {
+            partyObjects.sort((a, b) => b.quotient - a.quotient);
+            partyObjects[0].seats++;
+            result.push(partyObjects[0].id);
+            partyObjects.forEach(party => this.calculateQuotient(party));
+        }
+
+        return result;
     }
 }

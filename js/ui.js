@@ -235,6 +235,10 @@ class ElectionSimulation {
             "Largest remainder method (Imperiali)",
             () => this.performLRM("imperiali"));
 
+        this.dhondt = this.buildPerformElectionButton(node,
+            "D'Hondt method",
+            () => this.performDhondt());
+
         this.singleNonTransferrableVote = this.buildPerformElectionButton(node,
             "Individual candidates",
             () => this.performSNTV());
@@ -292,6 +296,11 @@ class ElectionSimulation {
     performLRM(quotaName) {
         this.largestRemainder = new LargestRemainder(this.seatCount, quotaName);
         this.largestRemainder.performElection();
+    }
+
+    performDhondt(){
+        this.dhondt = new Dhondt(this.seatCount);
+        this.dhondt.performElection();
     }
 
     updateCandidateList() {

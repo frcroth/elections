@@ -1,6 +1,6 @@
 * {
-    font-family: 'Lato', sans-serif;
-    padding: 3px
+    font-family: "Lato", sans-serif;
+    padding: 3px;
 }
 
 div {
@@ -8,7 +8,7 @@ div {
 }
 
 li {
-    list-style-type: none
+    list-style-type: none;
 }
 
 canvas#coordinate-system {
@@ -18,7 +18,7 @@ canvas#coordinate-system {
 
 .party-container {
     width: max-content;
-    padding: 1%
+    padding: 1%;
 }
 
 #coordinate-system-row {
@@ -27,11 +27,11 @@ canvas#coordinate-system {
 }
 
 .main-row {
-    width: 100%
+    width: 100%;
 }
 
 .btn-secondary {
-    margin: 5px
+    margin: 5px;
 }
 
 .footer {
@@ -49,11 +49,11 @@ canvas#coordinate-system {
 
 .footer div div {
     padding-left: 40px;
-    padding-right: 40px
+    padding-right: 40px;
 }
 
 #additional-results {
-    padding: 20px
+    padding: 20px;
 }
 
 #election-results {
@@ -62,7 +62,7 @@ canvas#coordinate-system {
 
 #diagram-canvas {
     display: block;
-    margin:auto
+    margin: auto;
 }
 
 .quote {
@@ -71,5 +71,5 @@ canvas#coordinate-system {
 }
 
 .head-row {
-    width: 100%
+    width: 100%;
 }
