@@ -202,23 +202,23 @@ class ElectionSimulation {
     buildOneSeatElectionOptions(node) {
 
         this.firstPastThePost = this.buildPerformElectionButton(node,
-            "Perform first past the post election",
+            "First past the post election",
             () => this.performFirstPastThePost());
 
         this.instantRunoff = this.buildPerformElectionButton(node,
-            "Perform instant runoff election",
+            "Instant runoff election",
             () => this.performInstantRunoff());
 
         this.bordaCount = this.buildPerformElectionButton(node,
-            "Perform Borda count",
+            "Borda count",
             () => this.performBordaCount());
 
         this.bucklinVote = this.buildPerformElectionButton(node,
-            "Perform Bucklin vote",
+            "Bucklin vote",
             () => this.performBucklinVote());
 
         this.condorcetMethod = this.buildPerformElectionButton(node,
-            "Perform pairwise condorcet",
+            "Pairwise condorcet",
             () => this.performCondorcet());
     }
 

@@ -132,7 +132,6 @@ class FirstPastThePost extends Election {
     let voteCount = new Array(this.model.candidates.length).fill(0);
 
     for (let voter_preference in preferences) {
-      const voter = voter_preference;
       let first_preference = preferences[voter_preference][0];
       voteCount[first_preference]++;
     }
@@ -195,10 +194,8 @@ class FirstPastThePost extends Election {
     text_container.innerHTML = '';
 
     const text = document.createElement("p");
-    let content = "In the runoff election, " + this.runOffCandidates[0].party + " and " + this.runOffCandidates[1].party + " competed. The " +
-      this.getRunOffWinner().party + " won with " + this.getRunOffWinnerPercentage() + "% of the votes.";
-
-    text.innerHTML = content;
+    text.innerHTML = "In the runoff election, " + this.runOffCandidates[0].party + " and " + this.runOffCandidates[1].party + " competed. The " +
+        this.getRunOffWinner().party + " won with " + this.getRunOffWinnerPercentage() + "% of the votes.";
     text_container.appendChild(text);
 
   }
@@ -206,7 +203,7 @@ class FirstPastThePost extends Election {
 
   getResultText() {
     let content = "<p>In a <i>first past the post</i> election, the candidate with the plurality of votes wins. " +
-      "When two candidates have the same number of votes, it may be decided by e.g. a runoff election or a coin toss.";
+      "When two candidates have the same number of votes, it may be decided by e.g. a runoff election, or a coin toss.";
     if (this.mostVotesTied()) {
       content += "</br> There has been no clear result.</p>";
 
@@ -373,8 +370,7 @@ class BucklinVote extends Election {
     }
 
     for (let voter_preference in preferences) {
-      const voter = voter_preference;
-      voteCount[preferences[voter][this.iteration]]++;
+      voteCount[preferences[voter_preference][this.iteration]]++;
     }
     return voteCount;
   }
@@ -386,7 +382,8 @@ class BucklinVote extends Election {
       "preference 2 are added to the vote count and so forth.";
     if (!this.electionOver()) {
       content += "</br> There is no winner yet. Iteration " + this.iteration + ".</p>";
-      let iterationButton = "<button onclick=\"document.electionSimulation.performBucklinIteration()\" class=\"btn btn-secondary\">Count votes of next preference</button>";
+      let iterationButton = "<button onclick=\"document.electionSimulation.performBucklinIteration()\" " +
+          "class=\"btn btn-secondary\">Count votes of next preference</button>";
       content += iterationButton;
     } else {
       content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
@@ -416,9 +413,10 @@ class CondorcetMethod extends Election {
 
   getResultText() {
     let content = "<p>In an election using the <i>Condorcet Method</i> all candidates compete against each other in  " +
-      "separate pairwise elections, which are calculated with voter's preferences. However wins the most elections wins the whole election.";
+      "separate pairwise elections, which are calculated with voter's preferences. " +
+        "Whoever wins the most elections wins the whole election.";
     content += "</br> The votes have been counted. The winner is the " + this.getWinner().party +
-      ". Congratulations!"// </br> The winner has won with " + this.getWinnerPercentage() + "% of the effective vote.</p>";
+      ". Congratulations!"
     this.setAdditionalStats();
     return content;
   }

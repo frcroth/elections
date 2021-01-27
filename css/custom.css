@@ -60,6 +60,11 @@ canvas#coordinate-system {
     min-width: 30%;
 }
 
+#diagram-canvas {
+    display: block;
+    margin:auto
+}
+
 .quote {
     font-style: italic;
     margin: auto;
