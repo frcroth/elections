@@ -36,7 +36,7 @@ class Election {
         scales: {
           yAxes: [{
             ticks: {
-              min: 0,
+              min: 0
             }
           }],
           xAxes: [{
@@ -169,7 +169,7 @@ class FirstPastThePost extends Election {
   }
 
   getRunOffWinner() {
-    let winner_index = this.runOffResults.indexOf(Math.max.apply(Math, this.runOffResults));
+    const winner_index = this.runOffResults.indexOf(Math.max.apply(Math, this.runOffResults));
     return this.runOffCandidates[winner_index];
   }
 
@@ -225,10 +225,6 @@ class FirstPastThePost extends Election {
 }
 
 class InstantRunoff extends Election {
-
-  constructor() {
-    super();
-  }
 
   performElection() {
     this.eliminatedCandidates = [];

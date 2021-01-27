@@ -12,7 +12,7 @@ Currently implemented voting mechanisms:
 - [Instant runoff](https://en.wikipedia.org/wiki/Instant-runoff_voting)
 - [Borda count](https://en.wikipedia.org/wiki/Borda_count)
 - [Bucklin voting](https://en.wikipedia.org/wiki/Bucklin_voting#Voting_process)
-- [Condorcet method](https://en.wikipedia.org/wiki/Condorcet_method)
+- [Condorcet method](https://en.wikipedia.org/wiki/Condorcet_method)  
 For multiple seats:
 - [Sainte-Laguë method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method) 
 - [Largest Remainder method](https://en.wikipedia.org/wiki/Largest_remainder_method) with different quotas

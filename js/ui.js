@@ -50,7 +50,7 @@ class CoordinateSystem {
     }
 
     drawPoint(pos, color) {
-        let circle = new Path2D();
+        const circle = new Path2D();
         circle.arc(pos.x * this.size, pos.y * this.size, this.size / 40, 0, 2 * Math.PI);
         this.context.fillStyle = color;
         this.context.fill(circle);
@@ -70,7 +70,7 @@ class CoordinateSystem {
     }
 
     addCandidate(pos) {
-        let candidate = this.model.addCandidate(pos);
+        const candidate = this.model.addCandidate(pos);
         if (candidate) {
             this.drawCandidatePoint(candidate);
             document.electionSimulation.updateCandidateList();
@@ -86,7 +86,7 @@ class CoordinateSystem {
     }
 
     addVoter(pos) {
-        let voter = this.model.addVoter(pos);
+        const voter = this.model.addVoter(pos);
         this.drawVoterPoint(voter);
     }
 
@@ -190,63 +190,54 @@ class ElectionSimulation {
         }
     }
 
+    buildPerformElectionButton(parentNode, text, clickAction) {
+        const button = document.createElement("button");
+        button.onclick = clickAction;
+        button.classList.add("btn", "btn-secondary");
+        button.innerHTML = text;
+        parentNode.appendChild(button);
+        return button;
+    }
+
     buildOneSeatElectionOptions(node) {
 
-        this.firstPastThePost = document.createElement("button");
-        this.firstPastThePost.onclick = () => this.performFirstPastThePost();
-        this.firstPastThePost.classList.add("btn", "btn-secondary");
-        this.firstPastThePost.innerHTML = "Perform first past the post election";
-        node.appendChild(this.firstPastThePost);
+        this.firstPastThePost = this.buildPerformElectionButton(node,
+            "Perform first past the post election",
+            () => this.performFirstPastThePost());
 
-        this.instantRunoff = document.createElement("button");
-        this.instantRunoff.onclick = () => this.performInstantRunoff();
-        this.instantRunoff.classList.add("btn", "btn-secondary");
-        this.instantRunoff.innerHTML = "Perform instant runoff election";
-        node.appendChild(this.instantRunoff);
+        this.instantRunoff = this.buildPerformElectionButton(node,
+            "Perform instant runoff election",
+            () => this.performInstantRunoff());
 
-        this.bordaCount = document.createElement("button");
-        this.bordaCount.onclick = () => this.performBordaCount();
-        this.bordaCount.classList.add("btn", "btn-secondary");
-        this.bordaCount.innerHTML = "Perform Borda count";
-        node.appendChild(this.bordaCount);
+        this.bordaCount = this.buildPerformElectionButton(node,
+            "Perform Borda count",
+            () => this.performBordaCount());
 
-        this.bucklinVote = document.createElement("button");
-        this.bucklinVote.onclick = () => this.performBucklinVote();
-        this.bucklinVote.classList.add("btn", "btn-secondary");
-        this.bucklinVote.innerHTML = "Perform Bucklin vote";
-        node.appendChild(this.bucklinVote);
+        this.bucklinVote = this.buildPerformElectionButton(node,
+            "Perform Bucklin vote",
+            () => this.performBucklinVote());
 
-        this.condorcetMethod = document.createElement("button");
-        this.condorcetMethod.onclick = () => this.performCondorcet();
-        this.condorcetMethod.classList.add("btn", "btn-secondary");
-        this.condorcetMethod.innerHTML = "Perform pairwise condorcet";
-        node.appendChild(this.condorcetMethod);
+        this.condorcetMethod = this.buildPerformElectionButton(node,
+            "Perform pairwise condorcet",
+            () => this.performCondorcet());
     }
 
     buildMultiSeatElectionOptions(node) {
-        this.sainteLagueVote = document.createElement("button");
-        this.sainteLagueVote.onclick = () => this.performSL();
-        this.sainteLagueVote.classList.add("btn", "btn-secondary");
-        this.sainteLagueVote.innerHTML = "Sainte-Laguë method";
-        node.appendChild(this.sainteLagueVote);
+        this.sainteLagueVote = this.buildPerformElectionButton(node,
+            "Sainte-Laguë method",
+            () => this.performSL());
 
-        this.largestRemainderD = document.createElement("button");
-        this.largestRemainderD.onclick = () => this.performLRM("droop");
-        this.largestRemainderD.classList.add("btn", "btn-secondary");
-        this.largestRemainderD.innerHTML = "Largest remainder method (Droop)";
-        node.appendChild(this.largestRemainderD);
+        this.largestRemainderD = this.buildPerformElectionButton(node,
+            "Largest remainder method (Droop)",
+            () => this.performLRM("droop"));
 
-        this.largestRemainderI = document.createElement("button");
-        this.largestRemainderI.onclick = () => this.performLRM("imperiali");
-        this.largestRemainderI.classList.add("btn", "btn-secondary");
-        this.largestRemainderI.innerHTML = "Largest remainder method (Imperiali)";
-        node.appendChild(this.largestRemainderI);
+        this.largestRemainderI = this.buildPerformElectionButton(node,
+            "Largest remainder method (Imperiali)",
+            () => this.performLRM("imperiali"));
 
-        this.singleNonTransferrableVote = document.createElement("button");
-        this.singleNonTransferrableVote.onclick = () => this.performSNTV();
-        this.singleNonTransferrableVote.classList.add("btn", "btn-secondary");
-        this.singleNonTransferrableVote.innerHTML = "Individual candidates";
-        node.appendChild(this.singleNonTransferrableVote);
+        this.singleNonTransferrableVote = this.buildPerformElectionButton(node,
+            "Individual candidates",
+            () => this.performSNTV());
     }
 
     performFirstPastThePost() {
@@ -330,9 +321,14 @@ class ElectionSimulation {
 
 
 let coordinateSystem = new CoordinateSystem("coordinate-system");
-$(window).on('resize', coordinateSystem.onResize);
+this.onresize = () => coordinateSystem.onResize();
 coordinateSystem.adjustToSize();
-let electionSimulation = new ElectionSimulation(coordinateSystem);
+
+const electionSimulation = new ElectionSimulation(coordinateSystem);
+
+/*
+* Utilities
+*/
 
 // https://stackoverflow.com/questions/11867545/change-text-color-based-on-brightness-of-the-covered-background-area
 function getContrastYIQ(hexColor) {

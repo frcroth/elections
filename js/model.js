@@ -55,7 +55,7 @@ class Model {
 
   getPreferences(voter) {
     let distances = [];
-    this.candidates.forEach((candidate) => {
+    this.candidates.forEach(candidate => {
       let dist = this.calculateDistance(voter.pos, candidate.pos);
       distances.push({ id: candidate.id, dist: dist });
     })
@@ -65,24 +65,22 @@ class Model {
 
   calculatePreferences() {
     let preferenceMap = {};
-    this.voters.forEach((voter) => preferenceMap[voter.id] = this.getPreferences(voter));
+    this.voters.forEach(voter => preferenceMap[voter.id] = this.getPreferences(voter));
     return preferenceMap;
   }
 
   getFirstPreferences() {
     let preferenceMap = {};
-    this.voters.forEach((voter) => preferenceMap[voter.id] = this.getPreferences(voter)[0]);
+    this.voters.forEach(voter => preferenceMap[voter.id] = this.getPreferences(voter)[0]);
     return preferenceMap;
   }
 
   getFirstPreferencePerCandidate() {
-    let voteCounts = {};
-    for (let i = 0; i < this.candidates.length; i++) {
-      voteCounts[i] = 0;
-    }
+    const voteCounts = {};
+    this.candidates.forEach(candidate => voteCounts[candidate.id] = 0);
 
-    let firstPreferences = this.getFirstPreferences();
-    Object.entries(firstPreferences).forEach((voterCandidatePair) => voteCounts[voterCandidatePair[1]] = voteCounts[voterCandidatePair[1]] + 1);
+    const firstPreferences = this.getFirstPreferences();
+    Object.entries(firstPreferences).forEach(voterCandidatePair => voteCounts[voterCandidatePair[1]] = voteCounts[voterCandidatePair[1]] + 1);
     return voteCounts;
   }
 
@@ -98,14 +96,13 @@ class Model {
           }
         }
       }
-
     });
     return matrix;
   }
 
   getDissatisfactionList(winner_id) {
-    let dissatisfactionMap = this.calculateDissatisfaction(winner_id);
-    let dissatisfactions = [];
+    const dissatisfactionMap = this.calculateDissatisfaction(winner_id);
+    const dissatisfactions = [];
     for (let key in dissatisfactionMap) {
       dissatisfactions.push(dissatisfactionMap[key]);
     }
