@@ -1,4 +1,6 @@
-"use strict";
+import { Model } from "./model.js";
+import { FirstPastThePost, InstantRunoff, BordaCount, BucklinVote, CondorcetMethod } from "./elections.js";
+import { SingleNonTransferableVote, SainteLaguëVote, LargestRemainder, Dhondt, MacaneseDhondt, HuntingtonHill} from "./multi-seat-election.js";
 
 class CoordinateSystem {
 
@@ -15,20 +17,16 @@ class CoordinateSystem {
     readyCanvas() {
         this.clearCanvas();
         this.drawLines();
-        if (!this.eventListenerInitialized) {
-            this.canvas.addEventListener("mousedown", this.handleMouseClick);
-            this.eventListenerInitialized = true;
-        }
-
+        this.canvas.onmousedown = (event) => this.handleMouseClick(event);
     }
 
     handleMouseClick(event) {
-        let pos = coordinateSystem.getCursorPosition(event);
-        if (coordinateSystem.drawMode === 0) {
-            coordinateSystem.addVoter(pos);
+        let pos = this.getCursorPosition(event);
+        if (this.drawMode === 0) {
+            this.addVoter(pos);
         }
-        if (coordinateSystem.drawMode === 1) {
-            coordinateSystem.addCandidate(pos);
+        if (this.drawMode === 1) {
+            this.addCandidate(pos);
         }
     }
 
@@ -113,7 +111,7 @@ class CoordinateSystem {
     }
 
     onResize() {
-        coordinateSystem.adjustToSize();
+        this.adjustToSize();
     }
 
     adjustToSize() {
@@ -130,8 +128,7 @@ document.model = new Model();
 
 class ElectionSimulation {
 
-    constructor(coordinateSystem) {
-        this.coordinateSystem = coordinateSystem;
+    constructor() {
         this.model = document.model;
         this.centralColumn = document.getElementById("central-column");
         this.electionMode = "one-seat";
@@ -346,19 +343,19 @@ class ElectionSimulation {
 
     resetModel() {
         document.model = new Model();
-        coordinateSystem.model = document.model;
+        document.coordinateSystem.model = document.model;
         this.model = document.model;
         this.updateCandidateList();
-        coordinateSystem.readyCanvas();
+        document.coordinateSystem.readyCanvas();
     }
 }
 
 
-let coordinateSystem = new CoordinateSystem("coordinate-system");
-this.onresize = () => coordinateSystem.onResize();
-coordinateSystem.adjustToSize();
+document.coordinateSystem = new CoordinateSystem("coordinate-system");
+window.onresize = () => document.coordinateSystem.onResize();
+document.coordinateSystem.adjustToSize();
 
-const electionSimulation = new ElectionSimulation(coordinateSystem);
+document.electionSimulation = new ElectionSimulation();
 
 /*
 * Utilities
@@ -375,7 +372,7 @@ function getContrastYIQ(hexColor) {
 }
 
 function activateDropdownMenu() {
-    if (coordinateSystem.drawMode === 1) {
+    if (document.coordinateSystem.drawMode === 1) {
         document.getElementById("voters-menu-item").classList.remove("active");
         document.getElementById("candidates-menu-item").classList.add("active");
     } else {

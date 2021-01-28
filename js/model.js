@@ -1,6 +1,4 @@
-"use strict";
-
-class Model {
+export class Model {
 
     constructor() {
         this.MAX_NUMBER_CANDIDATES = 8;

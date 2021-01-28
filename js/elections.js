@@ -1,8 +1,7 @@
-"use strict";
 
-let result_container = document.getElementById("election-results");
+/* global Chart*/
 
-class Election {
+export class Election {
 
     constructor() {
         this.model = document.model;
@@ -114,7 +113,7 @@ class Election {
 
 }
 
-class FirstPastThePost extends Election {
+export class FirstPastThePost extends Election {
 
     constructor() {
         super();
@@ -221,7 +220,7 @@ class FirstPastThePost extends Election {
 
 }
 
-class InstantRunoff extends Election {
+export class InstantRunoff extends Election {
 
     performElection() {
         this.eliminatedCandidates = [];
@@ -303,7 +302,7 @@ class InstantRunoff extends Election {
     }
 }
 
-class BordaCount extends Election {
+export class BordaCount extends Election {
     performElection() {
         this.results = this.calculateResults();
         this.publishResults();
@@ -337,7 +336,7 @@ class BordaCount extends Election {
     }
 }
 
-class BucklinVote extends Election {
+export class BucklinVote extends Election {
     performElection() {
         this.iteration = 0;
         this.results = this.calculateResults();
@@ -394,7 +393,7 @@ class BucklinVote extends Election {
     }
 }
 
-class CondorcetMethod extends Election {
+export class CondorcetMethod extends Election {
     performElection() {
         this.results = this.calculateResults();
         this.publishResults();

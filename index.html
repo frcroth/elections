@@ -97,13 +97,13 @@
                             Presets
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" onclick="setPreset('the-outlier')" href="javascript:void(0);">The
+                            <a class="dropdown-item" id="theOutlierButton" href="javascript:void(0);">The
                                 outlier</a>
-                            <a class="dropdown-item" onclick="setPreset('the-compromise')"
+                            <a class="dropdown-item" id="theCompromiseButton"
                                 href="javascript:void(0);">The compromise</a>
-                            <a class="dropdown-item" onclick="setPreset('balance')"
+                            <a class="dropdown-item" id="balanceButton"
                                 href="javascript:void(0);">Balance</a>
-                            <a class="dropdown-item" onclick="setPreset('dominant center')"
+                            <a class="dropdown-item" id="dominantCenterButton"
                                 href="javascript:void(0);">Dominant Center</a>
                         </div>
                     </div>
@@ -167,11 +167,11 @@
         crossorigin="anonymous"></script>
 
     <!-- Custom Scripts-->
-    <script src="js/model.js"></script>
-    <script src="js/elections.js"></script>
-    <script src="js/multi-seat-election.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/presets.js"></script>
+    <script type="module" src="js/model.js"></script>
+    <script type="module" src="js/elections.js"></script>
+    <script type="module" src="js/multi-seat-election.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/presets.js"></script>
 </body>
 
 </html>

@@ -1,6 +1,5 @@
-"use strict;";
-
-class MultiSeatElection {
+/* global Chart*/
+export class MultiSeatElection {
     constructor(seatNumber) {
         this.model = document.model;
         this.seatNumber = seatNumber;
@@ -72,7 +71,7 @@ class MultiSeatElection {
     }
 }
 
-class SingleNonTransferableVote extends MultiSeatElection {
+export class SingleNonTransferableVote extends MultiSeatElection {
 
     getResults() {
         let firstPreferences = this.model.getFirstPreferencePerCandidate();
@@ -82,7 +81,7 @@ class SingleNonTransferableVote extends MultiSeatElection {
     }
 }
 
-class SainteLaguëVote extends MultiSeatElection {
+export class SainteLaguëVote extends MultiSeatElection {
     getResults() {
         let result = [];
 
@@ -112,7 +111,7 @@ class SainteLaguëVote extends MultiSeatElection {
     }
 }
 
-class LargestRemainder extends MultiSeatElection {
+export class LargestRemainder extends MultiSeatElection {
 
     constructor(seatNumber, quotaName) {
         super(seatNumber);
@@ -153,7 +152,7 @@ class LargestRemainder extends MultiSeatElection {
     }
 }
 
-class Dhondt extends MultiSeatElection {
+export class Dhondt extends MultiSeatElection {
 
     calculateQuotient(party) {
         party.quotient = party.votes / (party.seats + 1);
@@ -182,13 +181,13 @@ class Dhondt extends MultiSeatElection {
     }
 }
 
-class MacaneseDhondt extends Dhondt {
+export class MacaneseDhondt extends Dhondt {
     calculateQuotient(party) {
         party.quotient = party.votes / Math.pow(2, party.seats);
     }
 }
 
-class HuntingtonHill extends MultiSeatElection {
+export class HuntingtonHill extends MultiSeatElection {
 
     getResults() {
         let totalVotes = this.model.voters.length;

@@ -1,4 +1,4 @@
-"use strict";
+import { Model } from "./model.js";
 
 let presets = {
     "the-outlier": {
@@ -593,14 +593,19 @@ let presets = {
 };
 
 function loadPreset(preset) {
-    preset["voters"].forEach((voterPos) => coordinateSystem.addVoter(voterPos));
-    preset["candidates"].forEach((candidatePos) => coordinateSystem.addCandidate(candidatePos));
+    preset["voters"].forEach(voterPos => document.coordinateSystem.addVoter(voterPos));
+    preset["candidates"].forEach(candidatePos => document.coordinateSystem.addCandidate(candidatePos));
 }
 
 function setPreset(name) {
     let preset = presets[name];
     document.model = new Model();
-    coordinateSystem.readyCanvas();
-    coordinateSystem.model = document.model;
+    document.coordinateSystem.readyCanvas();
+    document.coordinateSystem.model = document.model;
     loadPreset(preset);
 }
+
+document.getElementById("theOutlierButton").onclick = () => setPreset("the-outlier");
+document.getElementById("theCompromiseButton").onclick = () => setPreset("the-compromise");
+document.getElementById("balanceButton").onclick = () => setPreset("balance");
+document.getElementById("dominantCenterButton").onclick = () => setPreset("dominant center");
