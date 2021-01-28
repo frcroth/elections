@@ -18,7 +18,7 @@ class MultiSeatElection {
 
     performElection() {
         const preferences = this.model.getFirstPreferencePerCandidate();
-        let resultText = "<p>In an election with " + this.seatNumber + " seats, the seats where distributed as follows:</p>";
+        let resultText = "<p>In an election with " + this.seatNumber + " seats and " + this.model.voters.length + " valid ballots, the seats where distributed as follows:</p>";
         let results = this.getResults();
         resultText += '<table class="table">';
         let resultsPerParty = this.getSeatsPerParty(results);
@@ -180,4 +180,44 @@ class Dhondt extends MultiSeatElection {
 
         return result;
     }
+}
+
+class HuntingtonHill extends MultiSeatElection {
+
+    getResults() {
+        let totalVotes = this.model.voters.length;
+        let qualificationValue = totalVotes / this.seatNumber;
+        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+
+        let parties = [];
+        this.model.candidates.forEach(candidate => { //use map
+            parties.push({
+                id: candidate.id,
+                votes: firstPreferences[candidate.id],
+                seats: 1,
+                isQualified: firstPreferences[candidate.id] > qualificationValue,
+            });
+        });
+
+        let results = [];
+        parties = parties.filter(party => party.isQualified);
+        // Assign one seat per eligible party
+        results = parties.map(party => party.id);
+        let eligibleCount = results.length;
+        // Assign remaining seats
+        for (let i = 0; i < this.seatNumber - eligibleCount; i++) {
+            parties.forEach(party => {
+                party.priority = party.votes / Math.sqrt(party.seats * (party.seats + 1));
+            });
+            parties.sort((a, b) => b.priority - a.priority);
+            let winner = parties[0];
+            winner.seats++;
+            results.push(winner.id);
+        }
+
+        return results;
+
+
+    }
+
 }

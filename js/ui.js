@@ -200,48 +200,51 @@ class ElectionSimulation {
     }
 
     buildOneSeatElectionOptions(node) {
-
-        this.firstPastThePost = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "First past the post election",
             () => this.performFirstPastThePost());
 
-        this.instantRunoff = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Instant runoff election",
             () => this.performInstantRunoff());
 
-        this.bordaCount = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Borda count",
             () => this.performBordaCount());
 
-        this.bucklinVote = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Bucklin vote",
             () => this.performBucklinVote());
 
-        this.condorcetMethod = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Pairwise condorcet",
             () => this.performCondorcet());
     }
 
     buildMultiSeatElectionOptions(node) {
-        this.sainteLagueVote = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Sainte-Laguë method",
             () => this.performSL());
 
-        this.largestRemainderD = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Largest remainder method (Droop)",
             () => this.performLRM("droop"));
 
-        this.largestRemainderI = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "Largest remainder method (Imperiali)",
             () => this.performLRM("imperiali"));
 
-        this.dhondt = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
             "D'Hondt method",
             () => this.performDhondt());
 
-        this.singleNonTransferrableVote = this.buildPerformElectionButton(node,
+        this.buildPerformElectionButton(node,
+            "Huntington-Hill method",
+            () => this.performHH());
+
+        this.buildPerformElectionButton(node,
             "Individual candidates",
-            () => this.performSNTV());
+            () => this.performSNTV()); // This is not single transferrable vote!
     }
 
     performFirstPastThePost() {
@@ -298,9 +301,14 @@ class ElectionSimulation {
         this.largestRemainder.performElection();
     }
 
-    performDhondt(){
+    performDhondt() {
         this.dhondt = new Dhondt(this.seatCount);
         this.dhondt.performElection();
+    }
+
+    performHH() {
+        this.hh = new HuntingtonHill(this.seatCount);
+        this.hh.performElection();
     }
 
     updateCandidateList() {
