@@ -1,5 +1,5 @@
 
-/* global Chart*/
+import Chart  from "https://jspm.dev/npm:chart.js";
 
 export class Election {
 

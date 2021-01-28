@@ -1,4 +1,4 @@
-/* global Chart*/
+import Chart  from "https://jspm.dev/npm:chart.js";
 export class MultiSeatElection {
     constructor(seatNumber) {
         this.model = document.model;
