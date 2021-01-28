@@ -1,25 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 
     <title>Simulating Elections</title>
-    <meta name="description" content="Simulating Elections">
-    <meta name="author" content="frcroth">
-
+    <meta name="description" content="Simulating Elections" />
+    <meta name="author" content="frcroth" />
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/custom.css" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
 </head>
 
 <body>
@@ -28,29 +26,46 @@
             <h1>Simulating elections</h1>
         </div>
         <div class="col-sm" id="quote-box">
-            <q class="quote ">I consider it completely unimportant who in the party will vote, or how; but
-                what is extraordinarily important is this — who will count the votes, and how.</q> - Stalin
+            <q class="quote">I consider it completely unimportant who in the party will
+                vote, or how; but what is extraordinarily important is this
+                — who will count the votes, and how.</q>
+            - Stalin
         </div>
     </div>
     <hr />
-    <p> This is the political coordinate system. While a crude model to depict real politics, it will suffice for our
-        simulations.
-        Each person's political views are represented by a position in the coordinate system. This applies to voters and
-        candidates.
+    <p>
+        This is the political coordinate system. While a crude model to
+        depict real politics, it will suffice for our simulations. Each
+        person's political views are represented by a position in the
+        coordinate system. This applies to voters and candidates.
         <br />
-        Start by drawing voters and candidates by clicking at the position, or generate random people. You can use a
-        preset instead of drawing to get differing results.
-        Every voter wants to vote for the candidate that has the closest distance to them. Try out different voting
-        systems by clicking on the appropriate buttons. With different electoral systems, the same results may be
-        interpreted to result in different winners.</p>
+        Start by drawing voters and candidates by clicking at the position,
+        or generate random people. You can use a preset instead of drawing
+        to get differing results. Every voter wants to vote for the
+        candidate that has the closest distance to them. Try out different
+        voting systems by clicking on the appropriate buttons. With
+        different electoral systems, the same results may be interpreted to
+        result in different winners.
+    </p>
     <hr />
-    <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="one-seat-radio" name="multiOneSeatRadio" class="custom-control-input" checked="true">
-        <label class="custom-control-label" for="one-seat-radio">One seat</label>
-    </div>
-    <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="multi-seat-radio" name="multiOneSeatRadio" class="custom-control-input">
-        <label class="custom-control-label" for="multi-seat-radio">Multiple seats</label>
+    <div class="form-row">
+        <div class="col">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="one-seat-radio" name="multiOneSeatRadio" class="custom-control-input"
+                    checked="true" />
+                <label class="custom-control-label" for="one-seat-radio">One seat</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="multi-seat-radio" name="multiOneSeatRadio" class="custom-control-input" />
+                <label class="custom-control-label" for="multi-seat-radio">Multiple seats</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-inline">
+                <label for="seatCountInput">Number of seats</label>
+                <input type="Number" id="seatCountInput" value="10" min="1" disabled="true" />
+            </div>
+        </div>
     </div>
     <hr />
     <div class="row main-row">
@@ -62,48 +77,45 @@
             </div>
             <div>
                 <p>Add points: Voters and candidates</p>
-                <div class="row" style="margin: auto;">
+                <div class="row" style="margin: auto">
                     <div class="list-group">
-                        <a href='javascript:void(0);' id="voters-menu-item"
+                        <a href="javascript:void(0);" id="voters-menu-item"
                             class="list-group-item list-group-item-action active"
-                            onclick="coordinateSystem.setDrawMode(0)">Draw
-                            Voters</a>
-                        <a href='javascript:void(0);' id="candidates-menu-item"
+                            onclick="coordinateSystem.setDrawMode(0)">Draw Voters</a>
+                        <a href="javascript:void(0);" id="candidates-menu-item"
                             class="list-group-item list-group-item-action"
                             onclick="coordinateSystem.setDrawMode(1)">Draw candidates</a>
-
                     </div>
                     <div>
-                        <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">Generate
-                            random
-                            points</button>
+                        <button onclick="coordinateSystem.generateRandomPoints()" class="btn btn-secondary">
+                            Generate random points
+                        </button>
                     </div>
                     <div class="dropdown show">
-                        <a class="btn btn-secondary dropdown-toggle" href='javascript:void(0);' role="button"
+                        <a class="btn btn-secondary dropdown-toggle" href="javascript:void(0);" role="button"
                             id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Presets
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" onclick="setPreset('the-outlier')" href='javascript:void(0);'>The
+                            <a class="dropdown-item" onclick="setPreset('the-outlier')" href="javascript:void(0);">The
                                 outlier</a>
                             <a class="dropdown-item" onclick="setPreset('the-compromise')"
-                                href='javascript:void(0);'>The
-                                compromise</a>
+                                href="javascript:void(0);">The compromise</a>
                             <a class="dropdown-item" onclick="setPreset('balance')"
-                                href='javascript:void(0);'>Balance</a>
-                                <a class="dropdown-item" onclick="setPreset('dominant center')"
-                                href='javascript:void(0);'>Dominant Center</a>
+                                href="javascript:void(0);">Balance</a>
+                            <a class="dropdown-item" onclick="setPreset('dominant center')"
+                                href="javascript:void(0);">Dominant Center</a>
                         </div>
                     </div>
                     <div>
-                        <button onclick="document.electionSimulation.resetModel()"
-                            class="btn btn-secondary">Reset</button>
+                        <button onclick="document.electionSimulation.resetModel()" class="btn btn-secondary">
+                            Reset
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm" id="central-column">
-        </div>
+        <div class="col-sm" id="central-column"></div>
         <div class="col-sm">
             <div id="election-result-text"></div>
             <div id="election-results" class="card">
@@ -114,22 +126,26 @@
         <div id="additional-results" class="col-m"></div>
     </div>
     <hr />
-    <p>This system assumes that each voter votes exactly for the candidate that is closest to their positions. It also
-        assumes that voters fill out ballots with all possible alternatives.</p>
+    <p>
+        This system assumes that each voter votes exactly for the candidate
+        that is closest to their positions. It also assumes that voters fill
+        out ballots with all possible alternatives.
+    </p>
     <hr />
     <div>&nbsp;</div>
 
     <footer class="footer">
         <div class="row">
             <div class="col-sm">
-                <span class="text-muted">Election simulation by <a href="http://frcroth.de">frcroth</a></span>
+                <span class="text-muted">Election simulation by
+                    <a href="http://frcroth.de">frcroth</a></span>
             </div>
             <div class="col-s">
-                <span class="text-muted">See <a href="http://github.com/frcroth/elections">code</a></span>
+                <span class="text-muted">See
+                    <a href="http://github.com/frcroth/elections">code</a></span>
             </div>
         </div>
     </footer>
-
 
     <!-- BOOTSTRAP -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

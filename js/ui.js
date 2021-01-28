@@ -157,6 +157,7 @@ class ElectionSimulation {
         this.centralColumn.appendChild(this.electionOptions);
 
         this.buildElectionOptions(this.electionOptions);
+        this.initSeatCountInput();
     }
 
     initModeSelector() {
@@ -168,12 +169,19 @@ class ElectionSimulation {
         this.multiSeatRadio.onchange = () => this.setMode();
     }
 
+    initSeatCountInput() {
+        this.seatCountInput = document.getElementById('seatCountInput');
+        this.seatCountInput.onchange = () => this.seatCount = this.seatCountInput.valueAsNumber;
+    }
+
     setMode() {
         if (this.multiSeatRadio.checked) {
             this.electionMode = "multi-seat";
+            this.seatCountInput.disabled = false;
         }
         else {
             this.electionMode = "one-seat";
+            this.seatCountInput.disabled = true;
         }
         this.buildElectionOptions(this.electionOptions);
     }
@@ -239,8 +247,8 @@ class ElectionSimulation {
             () => this.performDhondt());
 
         this.buildPerformElectionButton(node,
-                "Macanes D'Hondt variation",
-                () => this.performMacaneseDhondt());
+            "Macanese D'Hondt variation",
+            () => this.performMacaneseDhondt());
 
         this.buildPerformElectionButton(node,
             "Huntington-Hill method",
