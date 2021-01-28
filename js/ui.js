@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 class CoordinateSystem {
 
@@ -16,7 +16,7 @@ class CoordinateSystem {
         this.clearCanvas();
         this.drawLines();
         if (!this.eventListenerInitialized) {
-            this.canvas.addEventListener('mousedown', this.handleMouseClick);
+            this.canvas.addEventListener("mousedown", this.handleMouseClick);
             this.eventListenerInitialized = true;
         }
 
@@ -82,7 +82,7 @@ class CoordinateSystem {
     }
 
     drawVoterPoint(voter) {
-        this.drawPoint(voter.pos, 'grey');
+        this.drawPoint(voter.pos, "grey");
     }
 
     addVoter(pos) {
@@ -133,7 +133,7 @@ class ElectionSimulation {
     constructor(coordinateSystem) {
         this.coordinateSystem = coordinateSystem;
         this.model = document.model;
-        this.centralColumn = document.getElementById('central-column')
+        this.centralColumn = document.getElementById("central-column");
         this.electionMode = "one-seat";
         this.build();
         this.initModeSelector();
@@ -144,15 +144,15 @@ class ElectionSimulation {
     build() {
         this.centralColumn.innerHTML = "";
 
-        this.headline = document.createElement('h4');
+        this.headline = document.createElement("h4");
         this.centralColumn.appendChild(this.headline);
 
-        this.candidateList = document.createElement('div');
+        this.candidateList = document.createElement("div");
         this.candidateList.id = "candidate-list";
         this.candidateList.classList.add("row");
         this.centralColumn.appendChild(this.candidateList);
 
-        this.electionOptions = document.createElement('div');
+        this.electionOptions = document.createElement("div");
         this.electionOptions.classList.add("card");
         this.centralColumn.appendChild(this.electionOptions);
 
@@ -170,7 +170,7 @@ class ElectionSimulation {
     }
 
     initSeatCountInput() {
-        this.seatCountInput = document.getElementById('seatCountInput');
+        this.seatCountInput = document.getElementById("seatCountInput");
         this.seatCountInput.onchange = () => this.seatCount = this.seatCountInput.valueAsNumber;
     }
 
@@ -330,7 +330,7 @@ class ElectionSimulation {
 
     updateCandidateList() {
         const list = this.candidateList;
-        list.innerHTML = '';
+        list.innerHTML = "";
         document.model.candidates.forEach((candidate) => {
             let listItemContainer = document.createElement("div");
             listItemContainer.classList.add("col-sm");
@@ -339,9 +339,9 @@ class ElectionSimulation {
             listItemContainer.style["color"] = getContrastYIQ(candidate.color);
             let listItem = document.createElement("p");
             listItem.innerHTML = candidate.party;
-            listItemContainer.appendChild(listItem)
+            listItemContainer.appendChild(listItem);
             list.appendChild(listItemContainer);
-        })
+        });
     }
 
     resetModel() {
@@ -371,7 +371,7 @@ function getContrastYIQ(hexColor) {
     const g = parseInt(hexColor.substr(2, 2), 16);
     const b = parseInt(hexColor.substr(4, 2), 16);
     const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    return (yiq >= 128) ? '#000000' : '#FFFFFF';
+    return (yiq >= 128) ? "#000000" : "#FFFFFF";
 }
 
 function activateDropdownMenu() {

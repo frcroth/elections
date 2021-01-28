@@ -1,4 +1,4 @@
-"use strict;"
+"use strict;";
 
 class MultiSeatElection {
     constructor(seatNumber) {
@@ -20,14 +20,14 @@ class MultiSeatElection {
         const preferences = this.model.getFirstPreferencePerCandidate();
         let resultText = "<p>In an election with " + this.seatNumber + " seats and " + this.model.voters.length + " valid ballots, the seats where distributed as follows:</p>";
         let results = this.getResults();
-        resultText += '<table class="table">';
+        resultText += "<table class=\"table\">";
         let resultsPerParty = this.getSeatsPerParty(results);
         this.model.candidates.forEach((candidate) => {
             resultText += "<tr><td>" + candidate.party + "</td><td>" +
                 resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td><td>" + Math.round((preferences[candidate.id] / this.model.voters.length) * 100) + "%</td></tr>";
-        })
+        });
         resultText += "</table>";
-        this.resultContainer.innerHTML = '';
+        this.resultContainer.innerHTML = "";
 
 
         this.drawDiagram(resultsPerParty);
@@ -45,7 +45,7 @@ class MultiSeatElection {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let sorted_data = document.model.candidates.map(candidate => data[candidate.id]);
         document.doughnut = new Chart(ctx, {
-            type: 'doughnut',
+            type: "doughnut",
             data: {
                 datasets: [{
                     data: sorted_data,
@@ -57,7 +57,7 @@ class MultiSeatElection {
             options: {
                 title: {
                     display: true,
-                    text: 'Election results'
+                    text: "Election results"
                 },
                 rotation: 1 * Math.PI,
                 circumference: 1 * Math.PI
@@ -78,16 +78,16 @@ class SingleNonTransferableVote extends MultiSeatElection {
         let firstPreferences = this.model.getFirstPreferencePerCandidate();
         let results = Object.entries(firstPreferences).sort((a, b) => a[1] - b[1]).reverse();
         results = results.slice(0, this.seatNumber);
-        return results.map(element => { return parseInt(element[0]) });
+        return results.map(element => { return parseInt(element[0]); });
     }
 }
 
 class SainteLaguëVote extends MultiSeatElection {
     getResults() {
-        let result = []
+        let result = [];
 
         let firstPreferences = this.model.getFirstPreferencePerCandidate();
-        let values = {}
+        let values = {};
         this.model.candidates.forEach(candidate => {
             values[candidate.id] = {
                 votes: firstPreferences[candidate.id],
@@ -97,11 +97,11 @@ class SainteLaguëVote extends MultiSeatElection {
             };
             values[candidate.id].quotient = values[candidate.id].votes /
                 (2 * values[candidate.id].allocated_seats + 1);
-        })
+        });
         // For each seat, choose party with highest quotient
         // Recalculate quotient
         for (let i = 0; i < this.seatNumber; i++) {
-            const sorted_parties = Object.values(values).sort((a, b) => (b.quotient - a.quotient))
+            const sorted_parties = Object.values(values).sort((a, b) => (b.quotient - a.quotient));
             const next_seat = sorted_parties[0].id;
             result.push(next_seat);
             values[next_seat].allocated_seats++;
@@ -130,7 +130,7 @@ class LargestRemainder extends MultiSeatElection {
             return (votes, seats) => (votes / (1 + seats));
         }
         if (quota == "imperiali") {
-            return (votes, seats) => (votes / (2 + seats))
+            return (votes, seats) => (votes / (2 + seats));
         }
     }
 
@@ -148,7 +148,7 @@ class LargestRemainder extends MultiSeatElection {
         let sortedRemainders = Object.entries(remainders).sort((a, b) => b[1] - a[1]);
         sortedRemainders.forEach(remainderPair => {
             result.push(parseInt(remainderPair[0]));
-        })
+        });
         return result.slice(0, this.seatNumber);
     }
 }
@@ -167,7 +167,7 @@ class Dhondt extends MultiSeatElection {
                 votes: firstPreferences[candidate.id],
                 seats: 0,
                 id: candidate.id
-            }
+            };
         });
         partyObjects.forEach(party => this.calculateQuotient(party));
         let result = [];
