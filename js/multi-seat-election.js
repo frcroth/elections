@@ -39,6 +39,7 @@ export class MultiSeatElection {
 
     drawDiagram(data) {
         document.doughnut?.destroy();
+        document.barChart?.destroy();
         let canvas = document.getElementById("diagram-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);

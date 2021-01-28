@@ -21,9 +21,10 @@ canvas#coordinate-system {
     padding: 1%;
 }
 
-#coordinate-system-row {
+#coordinate-system-col {
     padding: 20px;
     min-width: 35%;
+    max-width: 500px;
 }
 
 .main-row {

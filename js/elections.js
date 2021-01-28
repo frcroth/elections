@@ -17,6 +17,7 @@ export class Election {
 
     drawDiagram(data, colors, labels) {
         document.barChart?.destroy();
+        document.doughnut?.destroy();
         let canvas = document.getElementById("diagram-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
