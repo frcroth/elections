@@ -239,6 +239,10 @@ class ElectionSimulation {
             () => this.performDhondt());
 
         this.buildPerformElectionButton(node,
+                "Macanes D'Hondt variation",
+                () => this.performMacaneseDhondt());
+
+        this.buildPerformElectionButton(node,
             "Huntington-Hill method",
             () => this.performHH());
 
@@ -304,6 +308,11 @@ class ElectionSimulation {
     performDhondt() {
         this.dhondt = new Dhondt(this.seatCount);
         this.dhondt.performElection();
+    }
+
+    performMacaneseDhondt() {
+        this.mDhondt = new MacaneseDhondt(this.seatCount);
+        this.mDhondt.performElection();
     }
 
     performHH() {

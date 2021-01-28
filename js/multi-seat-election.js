@@ -182,6 +182,12 @@ class Dhondt extends MultiSeatElection {
     }
 }
 
+class MacaneseDhondt extends Dhondt {
+    calculateQuotient(party) {
+        party.quotient = party.votes / Math.pow(2, party.seats);
+    }
+}
+
 class HuntingtonHill extends MultiSeatElection {
 
     getResults() {
