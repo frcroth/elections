@@ -56,8 +56,19 @@ class CoordinateSystem {
 
     setDrawMode(mode) {
         this.drawMode = mode;
-        activateDropdownMenu();
+        this.activateDropdownMenu();
     }
+
+    activateDropdownMenu() {
+        if (this.drawMode === 1) {
+            document.getElementById("voters-menu-item").classList.remove("active");
+            document.getElementById("candidates-menu-item").classList.add("active");
+        } else {
+            document.getElementById("voters-menu-item").classList.add("active");
+            document.getElementById("candidates-menu-item").classList.remove("active");
+        }
+    }
+    
 
     clearCanvas() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -123,8 +134,6 @@ class CoordinateSystem {
     }
 
 }
-
-document.model = new Model();
 
 class ElectionSimulation {
 
@@ -215,7 +224,7 @@ class ElectionSimulation {
 
         this.buildPerformElectionButton(node,
             "Borda count",
-            () => this.performBordaCount());
+            () => new BordaCount().performElection());
 
         this.buildPerformElectionButton(node,
             "Bucklin vote",
@@ -223,33 +232,33 @@ class ElectionSimulation {
 
         this.buildPerformElectionButton(node,
             "Pairwise condorcet",
-            () => this.performCondorcet());
+            () => new CondorcetMethod().performElection());
     }
 
     buildMultiSeatElectionOptions(node) {
         this.buildPerformElectionButton(node,
             "Sainte-Laguë method",
-            () => this.performSL());
+            () => new SainteLaguëVote(this.seatCount).performElection());
 
         this.buildPerformElectionButton(node,
             "Largest remainder method (Droop)",
-            () => this.performLRM("droop"));
+            () => new LargestRemainder(this.seatCount, "droop").performElection());
 
         this.buildPerformElectionButton(node,
             "Largest remainder method (Imperiali)",
-            () => this.performLRM("imperiali"));
+            () => new LargestRemainder(this.seatCount, "imperiali").performElection());
 
         this.buildPerformElectionButton(node,
             "D'Hondt method",
-            () => this.performDhondt());
+            () => new Dhondt(this.seatCount).performElection());
 
         this.buildPerformElectionButton(node,
             "Macanese D'Hondt variation",
-            () => this.performMacaneseDhondt());
+            () => new MacaneseDhondt(this.seatCount).performElection());
 
         this.buildPerformElectionButton(node,
             "Huntington-Hill method",
-            () => this.performHH());
+            () => new HuntingtonHill(this.seatCount).performElection());
 
         this.buildPerformElectionButton(node,
             "Individual candidates",
@@ -266,19 +275,9 @@ class ElectionSimulation {
         this.ir.performElection();
     }
 
-    performBordaCount() {
-        this.bc = new BordaCount();
-        this.bc.performElection();
-    }
-
     performBucklinVote() {
         this.buc = new BucklinVote();
         this.buc.performElection();
-    }
-
-    performCondorcet() {
-        this.cm = new CondorcetMethod();
-        this.cm.performElection();
     }
 
     performRunOff() {
@@ -293,36 +292,9 @@ class ElectionSimulation {
         this.buc.performIteration();
     }
 
-    // Multi Seat Elections
-
     performSNTV() {
         this.sntv = new SingleNonTransferableVote(this.seatCount);
         this.sntv.performElection();
-    }
-
-    performSL() {
-        this.saintelague = new SainteLaguëVote(this.seatCount);
-        this.saintelague.performElection();
-    }
-
-    performLRM(quotaName) {
-        this.largestRemainder = new LargestRemainder(this.seatCount, quotaName);
-        this.largestRemainder.performElection();
-    }
-
-    performDhondt() {
-        this.dhondt = new Dhondt(this.seatCount);
-        this.dhondt.performElection();
-    }
-
-    performMacaneseDhondt() {
-        this.mDhondt = new MacaneseDhondt(this.seatCount);
-        this.mDhondt.performElection();
-    }
-
-    performHH() {
-        this.hh = new HuntingtonHill(this.seatCount);
-        this.hh.performElection();
     }
 
     updateCandidateList() {
@@ -350,12 +322,16 @@ class ElectionSimulation {
     }
 }
 
+function initPage() {
+    document.model = new Model();
+    document.coordinateSystem = new CoordinateSystem("coordinate-system");
+    window.onresize = () => document.coordinateSystem.onResize();
+    document.coordinateSystem.adjustToSize();
+    document.electionSimulation = new ElectionSimulation();
+}
 
-document.coordinateSystem = new CoordinateSystem("coordinate-system");
-window.onresize = () => document.coordinateSystem.onResize();
-document.coordinateSystem.adjustToSize();
+initPage();
 
-document.electionSimulation = new ElectionSimulation();
 
 /*
 * Utilities
@@ -369,14 +345,4 @@ function getContrastYIQ(hexColor) {
     const b = parseInt(hexColor.substr(4, 2), 16);
     const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
     return (yiq >= 128) ? "#000000" : "#FFFFFF";
-}
-
-function activateDropdownMenu() {
-    if (document.coordinateSystem.drawMode === 1) {
-        document.getElementById("voters-menu-item").classList.remove("active");
-        document.getElementById("candidates-menu-item").classList.add("active");
-    } else {
-        document.getElementById("voters-menu-item").classList.add("active");
-        document.getElementById("candidates-menu-item").classList.remove("active");
-    }
 }

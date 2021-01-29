@@ -1,7 +1,7 @@
 export class Model {
 
     constructor() {
-        this.MAX_NUMBER_CANDIDATES = 8;
+        this.MAX_NUMBER_CANDIDATES = 10;
         this.voters = [];
         this.candidates = [];
     }
@@ -122,7 +122,6 @@ export class Model {
             dissatisfactions[mid] :
             (dissatisfactions[mid - 1] + dissatisfactions[mid]) / 2;
     }
-
 
     getDiagonalLength() {
         return Math.sqrt(2);
