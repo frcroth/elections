@@ -1,4 +1,4 @@
-import Chart  from "https://jspm.dev/npm:chart.js";
+import Chart from "https://jspm.dev/npm:chart.js";
 export class MultiSeatElection {
     constructor(seatNumber) {
         this.model = document.model;
@@ -17,13 +17,13 @@ export class MultiSeatElection {
 
     performElection() {
         const preferences = this.model.getFirstPreferencePerCandidate();
-        let resultText = "<p>In an election with " + this.seatNumber + " seats and " + this.model.voters.length + " valid ballots, the seats where distributed as follows:</p>";
+        let resultText = `<p>In an election with ${this.seatNumber} seats and ${this.model.voters.length} valid ballots, the seats where distributed as follows:</p>`;
         let results = this.getResults();
         resultText += "<table class=\"table\">";
         let resultsPerParty = this.getSeatsPerParty(results);
         this.model.candidates.forEach((candidate) => {
-            resultText += "<tr><td>" + candidate.party + "</td><td>" +
-                resultsPerParty[candidate.id] + " Seats</td><td>" + preferences[candidate.id] + " Votes</td><td>" + Math.round((preferences[candidate.id] / this.model.voters.length) * 100) + "%</td></tr>";
+            resultText += `<tr><td>${candidate.party}</td><td>${resultsPerParty[candidate.id]} Seats</td>
+            <td>${preferences[candidate.id]} Votes</td><td>${Math.round((preferences[candidate.id] / this.model.voters.length) * 100)}%</td></tr>`;
         });
         resultText += "</table>";
         this.resultContainer.innerHTML = "";
