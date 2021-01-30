@@ -1,6 +1,6 @@
 {
   "name": "elections",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "This tool allows you to simulate elections. Place candidates and voters on a political coordinate system, and compare different voting systems to get different results.",
   "main": "index.js",
   "directories": {
@@ -17,6 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/frcroth/elections.git"
   },
+  "license": "MIT",
   "author": "frcroth",
   "bugs": {
     "url": "https://github.com/frcroth/elections/issues"

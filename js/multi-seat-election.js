@@ -201,7 +201,7 @@ export class HuntingtonHill extends MultiSeatElection {
                 votes: firstPreferences[candidate.id],
                 seats: 1,
                 isQualified: firstPreferences[candidate.id] > qualificationValue,
-            }
+            };
         });
 
         let results = [];
