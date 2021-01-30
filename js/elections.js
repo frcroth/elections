@@ -8,8 +8,23 @@ export class Election {
     }
 
     performElection() {
-    // subclass responsibility
+        // Main interface
+        this.results = this.getResults();
+        this.publishResults();
     }
+
+    getDescription() {
+        return "A basic description how this voting mechanism works.";
+    }
+
+    getResultText() {
+        return "A text that describes who the winner is, as well some useful stats.";
+    }
+
+    electionOver() {
+        return true; // Overridden by election types with multiple election types
+    }
+
 
     majority() {
         return Math.ceil(this.model.voters.length / 2);
@@ -57,19 +72,22 @@ export class Election {
     }
 
     setResultText(resultText) {
-        const text_container = document.getElementById("election-result-text");
-        text_container.innerHTML = "";
-        const text = document.createElement("div");
-        text.innerHTML = resultText;
-        text_container.appendChild(text);
-        text_container.classList.add("card");
+        const outerContainer = document.getElementById("election-result-text");
+        outerContainer.innerHTML = "";
+        const innerContainer = document.createElement("div");
+        innerContainer.classList.add("card-text");
+        resultText = `<p>${this.getDescription()}</p><p>${this.getResultText()}</p>`;
+        innerContainer.innerHTML = resultText;
+        outerContainer.appendChild(innerContainer);
+        outerContainer.classList.add("card");
     }
 
     publishResults() {
         this.clearAdditionalStats();
         this.drawDiagram(this.results, document.model.candidates.map(value => value.color),
             document.model.candidates.map(value => value.party));
-        this.setResultText(this.getResultText());
+        this.setResultText();
+        this.setAdditionalStats();
     }
 
     getWinner() {
@@ -114,27 +132,10 @@ export class Election {
 }
 
 export class FirstPastThePost extends Election {
+    getResults() {
+        let preferences = this.model.getFirstPreferencePerCandidate();
 
-    constructor() {
-        super();
-    }
-
-    performElection() {
-        this.results = this.calculateResults();
-        this.publishResults();
-        this.setAdditionalStats();
-    }
-
-    calculateResults() {
-        let preferences = this.model.calculatePreferences();
-
-        let voteCount = new Array(this.model.candidates.length).fill(0);
-
-        for (let voter_preference in preferences) {
-            let first_preference = preferences[voter_preference][0];
-            voteCount[first_preference]++;
-        }
-        return voteCount;
+        return this.model.candidates.map(candidate => preferences[candidate.id]);
     }
 
     getRunoffCandidates() {
@@ -198,23 +199,26 @@ export class FirstPastThePost extends Election {
 
     }
 
+    getDescription() {
+        return "In a <i>first past the post</i> election, the candidate with the plurality of votes wins. " +
+        "When two candidates have the same number of votes, it may be decided by e.g. a runoff election, or a coin toss.";
+    }
 
     getResultText() {
-        let content = "<p>In a <i>first past the post</i> election, the candidate with the plurality of votes wins. " +
-      "When two candidates have the same number of votes, it may be decided by e.g. a runoff election, or a coin toss.";
+        let text = "";
         if (this.mostVotesTied()) {
-            content += "</br> There has been no clear result.</p>";
+            text += "</br> There has been no clear result.";
 
         } else {
-            content += `</br> The votes have been counted. The winner is the ${this.getWinner().party}. 
-        Congratulations! </br> The winner has won with  ${this.getWinnerPercentage()}% of the vote.</p>`;
+            text += `</br> The votes have been counted. The winner is the ${this.getWinner().party}. 
+        Congratulations! </br> The winner has won with  ${this.getWinnerPercentage()}% of the vote.`;
         }
         let runOffButton = "<button onclick=\"document.electionSimulation.performRunOff()\" class=\"btn btn-secondary\">Perform a runoff election</button>";
 
-        content += runOffButton;
-        content += "<div id=\"runoff-text\"></div>";
+        text += runOffButton;
+        text += "<div id=\"runoff-text\"></div>";
 
-        return content;
+        return text;
     }
 
 }
@@ -225,17 +229,15 @@ export class InstantRunoff extends Election {
         this.eliminatedCandidates = [];
         this.iteration = 0;
         this.clearAdditionalStats();
-        this.results = this.calculateResults();
+        this.results = this.getResults();
         this.publishResults();
     }
-
-
 
     performIteration() {
         if (!this.electionOver()) {
             this.iteration++;
             this.eliminateCandidate(this.getLowestPerformingCandidate().id);
-            this.results = this.calculateResults();
+            this.results = this.getResults();
             this.publishResults();
         }
     }
@@ -267,7 +269,7 @@ export class InstantRunoff extends Election {
         return !this.eliminatedCandidates.includes(candidate_id);
     }
 
-    calculateResults() {
+    getResults() {
         let preferences = this.model.calculatePreferences();
 
         let voteCount = new Array(this.model.candidates.length).fill(0);
@@ -284,31 +286,27 @@ export class InstantRunoff extends Election {
         return voteCount;
     }
 
-    getResultText() {
-        let content = "<p>In an <i>instant runoff</i> election, a candidate wins with a majority of the votes. " +
-      "If no majority is achieved, the candidate with the fewest votes is eliminated and the votes go to the candidate that is preferred next.";
-        if (!this.electionOver()) {
-            content += `</br> There is no winner yet. Iteration ${this.iteration}</p>`;
-            let iterationButton = "<button onclick=\"document.electionSimulation.performInstantRunoffIteration()\" class=\"btn btn-secondary\">Iterate instant runoff</button>";
-            content += iterationButton;
-        } else {
-            content += `</br> The votes have been counted. The winner is the ${this.getWinner().party}
-        Congratulations! </br> The winner has won with ${this.getWinnerPercentage()}% of the effective vote.</p>`;
-            this.setAdditionalStats();
-        }
+    getDescription() {
+        return "In an <i>instant runoff</i> election, a candidate wins with a majority of the votes. " +
+        "If no majority is achieved, the candidate with the fewest votes is eliminated and the votes go to the candidate that is preferred next.";
+    }
 
-        return content;
+    getResultText() {
+        let text = "";
+        if (!this.electionOver()) {
+            text += `</br> There is no winner yet. Iteration ${this.iteration}</p>`;
+            let iterationButton = "<button onclick=\"document.electionSimulation.performInstantRunoffIteration()\" class=\"btn btn-secondary\">Iterate instant runoff</button>";
+            text += iterationButton;
+        } else {
+            text += `</br> The votes have been counted. The winner is the ${this.getWinner().party}
+        Congratulations! </br> The winner has won with ${this.getWinnerPercentage()}% of the effective vote.</p>`;
+        }
+        return text;
     }
 }
 
 export class BordaCount extends Election {
-    performElection() {
-        this.results = this.calculateResults();
-        this.publishResults();
-        this.setAdditionalStats();
-    }
-
-    calculateResults() {
+    getResults() {
         let preferences = this.model.calculatePreferences();
 
         let voteScore = new Array(this.model.candidates.length).fill(0);
@@ -322,32 +320,31 @@ export class BordaCount extends Election {
         return voteScore;
     }
 
+    getDescription() {
+        return "In a <i>Borda count</i> election, voters rank candidates. The preferences are then converted into scores, which are summed. ";
+    }
+
     getResultText() {
-        let content = "<p>In a <i>Borda count</i> election, voters rank candidates." +
-      " The preferences are then converted into scores, which are summed. ";
+        let text = "";
         if (this.mostVotesTied()) {
-            content += "There has been no clear result, as more than one party has the maximum amount of votes.";
+            text += "There has been no clear result, as more than one party has the maximum amount of votes.";
         } else {
-            content += `The ${this.getWinner().party} won with a score of ${this.getWinnerVotes()},
+            text += `The ${this.getWinner().party} won with a score of ${this.getWinnerVotes()},
        that's ${this.getWinnerPercentage()}% of the score.`;
         }
-        return content;
+        return text;
     }
 }
 
 export class BucklinVote extends Election {
     performElection() {
         this.iteration = 0;
-        this.results = this.calculateResults();
-        this.publishResults();
-        if (this.electionOver()) {
-            this.setAdditionalStats();
-        }
+        super.performElection();
     }
 
     performIteration() {
         this.iteration++;
-        this.results = this.calculateResults();
+        this.results = this.getResults();
         this.publishResults();
         if (this.electionOver()) {
             this.setAdditionalStats();
@@ -358,7 +355,7 @@ export class BucklinVote extends Election {
         return this.getWinnerVotes() > this.majority();
     }
 
-    calculateResults() {
+    getResults() {
         let preferences = this.model.calculatePreferences();
         let voteCount;
         if (!this.results) {
@@ -373,32 +370,31 @@ export class BucklinVote extends Election {
         return voteCount;
     }
 
+    getDescription() {
+        return "In a <i>Bucklin Voting</i> election, a candidate wins with a majority of the votes. " +
+        "Voters give a list of preferences. First all votes with preference 1 are counted, if no majority is achieved, votes with " +
+        "preference 2 are added to the vote count and so forth.";
+    }
+
 
     getResultText() {
-        let content = "<p>In a <i>Bucklin Voting</i> election, a candidate wins with a majority of the votes. " +
-      "Voters give a list of preferences. First all votes with preference 1 are counted, if no majority is achieved, votes with " +
-      "preference 2 are added to the vote count and so forth.";
+        let text = "";
         if (!this.electionOver()) {
-            content += `</br> There is no winner yet. Iteration ${this.iteration}.</p>`;
+            text += `</br> There is no winner yet. Iteration ${this.iteration}.</p>`;
             let iterationButton = "<button onclick=\"document.electionSimulation.performBucklinIteration()\" " +
         "class=\"btn btn-secondary\">Count votes of next preference</button>";
-            content += iterationButton;
+            text += iterationButton;
         } else {
-            content += `</br> The votes have been counted. The winner is the ${this.getWinner().party}.
+            text += `</br> The votes have been counted. The winner is the ${this.getWinner().party}.
        Congratulations! </br> The winner has won with ${this.getWinnerPercentage()}% of the effective vote.</p>`;
             this.setAdditionalStats();
         }
-        return content;
+        return text;
     }
 }
 
 export class CondorcetMethod extends Election {
-    performElection() {
-        this.results = this.calculateResults();
-        this.publishResults();
-    }
-
-    calculateResults() {
+    getResults() {
         let preferences = this.model.calculatePreferenceMatrix();
         let voteCount = [];
 
@@ -409,12 +405,12 @@ export class CondorcetMethod extends Election {
         return voteCount;
     }
 
+    getDescription() {
+        return "In an election using the <i>Condorcet Method</i> all candidates compete against each other in separate pairwise elections, which are decided with the voter's preferences. ";
+    }
+
     getResultText() {
-        let content = "<p>In an election using the <i>Condorcet Method</i> all candidates compete against each other in  " +
-      "separate pairwise elections, which are calculated with voter's preferences. " +
-      "Whoever wins the most elections wins the whole election.";
-        content += `</br> The votes have been counted. The winner is the ${this.getWinner().party}. Congratulations!`;
-        this.setAdditionalStats();
-        return content;
+        let text = `Whoever wins the most elections wins the whole election. </br> The votes have been counted. The winner is the ${this.getWinner().party}. Congratulations!`;
+        return text;
     }
 }
