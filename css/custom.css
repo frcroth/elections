@@ -27,6 +27,14 @@ canvas#coordinate-system {
     max-width: 500px;
 }
 
+#central-column {
+    max-width: 400px;
+}
+
+#result-column {
+    min-width: 400px;
+}
+
 .main-row {
     width: 100%;
 }

@@ -1,6 +1,6 @@
 import { Model } from "./model.js";
 import { FirstPastThePost, InstantRunoff, BordaCount, BucklinVote, CondorcetMethod } from "./elections.js";
-import { SingleNonTransferableVote, SainteLaguëVote, LargestRemainder, Dhondt, MacaneseDhondt, HuntingtonHill} from "./multi-seat-election.js";
+import { SingleNonTransferableVote, SainteLaguëVote, LargestRemainder, Dhondt, MacaneseDhondt, HuntingtonHill } from "./multi-seat-election.js";
 
 class CoordinateSystem {
 
@@ -68,7 +68,7 @@ class CoordinateSystem {
             document.getElementById("candidates-menu-item").classList.remove("active");
         }
     }
-    
+
 
     clearCanvas() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
