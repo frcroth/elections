@@ -17,8 +17,8 @@ export class MultiSeatElection {
 
     performElection() {
         const preferences = this.model.getFirstPreferencePerCandidate();
-        let resultText = `<p>In an election with ${this.seatNumber} seats and ${this.model.voters.length} valid ballots, the seats where distributed as follows:</p>`;
         let results = this.getResults();
+        let resultText = `<p>In an election with ${this.seatNumber} seats and ${this.model.voters.length} valid ballots, ${results.length} seats where distributed as follows:</p>`;
         resultText += "<table class=\"table\">";
         let resultsPerParty = this.getSeatsPerParty(results);
         this.model.candidates.forEach((candidate) => {
@@ -124,7 +124,7 @@ export class LargestRemainder extends MultiSeatElection {
             return (votes, seats) => (votes / seats);
         }
         if (quota == "droop") {
-            return (votes, seats) => (1 + (votes / (1 + seats)));
+            return (votes, seats) => (1 + Math.floor(votes / (1 + seats)));
         }
         if (quota == "hb") {
             return (votes, seats) => (votes / (1 + seats));
@@ -195,18 +195,22 @@ export class HuntingtonHill extends MultiSeatElection {
         let qualificationValue = totalVotes / this.seatNumber;
         let firstPreferences = this.model.getFirstPreferencePerCandidate();
 
-        let parties = [];
-        this.model.candidates.forEach(candidate => { //use map
-            parties.push({
+        let parties = this.model.candidates.map(candidate => {
+            return {
                 id: candidate.id,
                 votes: firstPreferences[candidate.id],
                 seats: 1,
                 isQualified: firstPreferences[candidate.id] > qualificationValue,
-            });
+            }
         });
 
         let results = [];
         parties = parties.filter(party => party.isQualified);
+
+        if (parties.length === 0) {
+            return []; // No eligible parties
+        }
+
         // Assign one seat per eligible party
         results = parties.map(party => party.id);
         let eligibleCount = results.length;
