@@ -1,6 +1,7 @@
 import Chart from "https://jspm.dev/npm:chart.js";
 export class MultiSeatElection {
-    constructor(seatNumber) {
+    constructor(seatNumber, electionThreshold) {
+        this.electionThreshold = electionThreshold;
         this.model = document.model;
         this.seatNumber = seatNumber;
         this.resultContainer = document.getElementById("election-result-text");
@@ -66,6 +67,36 @@ export class MultiSeatElection {
 
     }
 
+    getFirstPreferences() {
+        //Filter out votes that are below the election threshold
+        if(this.electionThreshold===0){
+            return this.model.getFirstPreferencePerCandidate();
+        }
+        const requiredVotes = this.model.voters.length * (this.electionThreshold/100);
+        const firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let result = {};
+        this.countedBallots = 0;
+        this.model.candidates.forEach(party => {
+            if(firstPreferences[party.id] >= requiredVotes){
+                result[party.id] = firstPreferences[party.id];
+                this.countedBallots += firstPreferences[party.id];
+            } else {
+                result[party.id] = 0;
+            }
+        });
+        return result;
+    }
+
+    /**
+     * Number of ballots that are counted (and not discarded because of threshold)
+     */
+    getCountedBallots() {
+        if("countedBallots" in this){
+            return this.countedBallots;
+        }
+        return this.model.voters.length;
+    }
+
     // Should return a ranked list of party ids
     getResults() {
 
@@ -75,7 +106,7 @@ export class MultiSeatElection {
 export class SingleNonTransferableVote extends MultiSeatElection {
 
     getResults() {
-        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let firstPreferences = this.getFirstPreferences();
         let results = Object.entries(firstPreferences).sort((a, b) => a[1] - b[1]).reverse();
         results = results.slice(0, this.seatNumber);
         return results.map(element => { return parseInt(element[0]); });
@@ -86,7 +117,7 @@ export class SainteLaguëVote extends MultiSeatElection {
     getResults() {
         let result = [];
 
-        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let firstPreferences = this.getFirstPreferences();
         let values = {};
         this.model.candidates.forEach(candidate => {
             values[candidate.id] = {
@@ -114,8 +145,8 @@ export class SainteLaguëVote extends MultiSeatElection {
 
 export class LargestRemainder extends MultiSeatElection {
 
-    constructor(seatNumber, quotaName) {
-        super(seatNumber);
+    constructor(seatNumber, electionThreshold, quotaName) {
+        super(seatNumber, electionThreshold);
         this.quotaName = quotaName;
     }
 
@@ -135,10 +166,10 @@ export class LargestRemainder extends MultiSeatElection {
     }
 
     getResults() {
-        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let firstPreferences = this.getFirstPreferences();
         let remainders = {};
         let result = [];
-        let quota = (this.getQuota(this.quotaName))(this.model.voters.length, this.seatNumber);
+        let quota = (this.getQuota(this.quotaName))(this.getCountedBallots(), this.seatNumber);
         this.model.candidates.forEach(candidate => {
             let votesPerQuota = firstPreferences[candidate.id] / quota;
             let guaranteedSeats = Array(Math.floor(votesPerQuota)).fill(candidate.id);
@@ -160,7 +191,7 @@ export class Dhondt extends MultiSeatElection {
     }
 
     getResults() {
-        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let firstPreferences = this.getFirstPreferences();
 
         let partyObjects = this.model.candidates.map(candidate => {
             return {
@@ -191,9 +222,9 @@ export class MacaneseDhondt extends Dhondt {
 export class HuntingtonHill extends MultiSeatElection {
 
     getResults() {
-        let totalVotes = this.model.voters.length;
+        let totalVotes = this.getCountedBallots();
         let qualificationValue = totalVotes / this.seatNumber;
-        let firstPreferences = this.model.getFirstPreferencePerCandidate();
+        let firstPreferences = this.getFirstPreferences();
 
         let parties = this.model.candidates.map(candidate => {
             return {

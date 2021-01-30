@@ -145,6 +145,7 @@ class ElectionSimulation {
         this.initModeSelector();
         document.electionSimulation = this;
         this.seatCount = 5;
+        this.electionThreshold = 0;
     }
 
     build() {
@@ -164,6 +165,7 @@ class ElectionSimulation {
 
         this.buildElectionOptions(this.electionOptions);
         this.initSeatCountInput();
+        this.initElectionThresholdInput();
     }
 
     initModeSelector() {
@@ -180,14 +182,21 @@ class ElectionSimulation {
         this.seatCountInput.onchange = () => this.seatCount = this.seatCountInput.valueAsNumber;
     }
 
+    initElectionThresholdInput() {
+        this.electionThresholdInput = document.getElementById("electionThresholdInput");
+        this.electionThresholdInput.onchange = () => this.electionThreshold = this.electionThresholdInput.valueAsNumber;
+    }
+
     setMode() {
         if (this.multiSeatRadio.checked) {
             this.electionMode = "multi-seat";
             this.seatCountInput.disabled = false;
+            this.electionThresholdInput.disabled = false;
         }
         else {
             this.electionMode = "one-seat";
             this.seatCountInput.disabled = true;
+            this.electionThresholdInput.disabled = true;
         }
         this.buildElectionOptions(this.electionOptions);
     }
@@ -238,27 +247,27 @@ class ElectionSimulation {
     buildMultiSeatElectionOptions(node) {
         this.buildPerformElectionButton(node,
             "Sainte-Laguë method",
-            () => new SainteLaguëVote(this.seatCount).performElection());
+            () => new SainteLaguëVote(this.seatCount, this.electionThreshold).performElection());
 
         this.buildPerformElectionButton(node,
             "Largest remainder method (Droop)",
-            () => new LargestRemainder(this.seatCount, "droop").performElection());
+            () => new LargestRemainder(this.seatCount, this.electionThreshold, "droop").performElection());
 
         this.buildPerformElectionButton(node,
             "Largest remainder method (Imperiali)",
-            () => new LargestRemainder(this.seatCount, "imperiali").performElection());
+            () => new LargestRemainder(this.seatCount, this.electionThreshold, "imperiali").performElection());
 
         this.buildPerformElectionButton(node,
             "D'Hondt method",
-            () => new Dhondt(this.seatCount).performElection());
+            () => new Dhondt(this.seatCount, this.electionThreshold).performElection());
 
         this.buildPerformElectionButton(node,
             "Macanese D'Hondt variation",
-            () => new MacaneseDhondt(this.seatCount).performElection());
+            () => new MacaneseDhondt(this.seatCount, this.electionThreshold).performElection());
 
         this.buildPerformElectionButton(node,
             "Huntington-Hill method",
-            () => new HuntingtonHill(this.seatCount).performElection());
+            () => new HuntingtonHill(this.seatCount, this.electionThreshold).performElection());
 
         this.buildPerformElectionButton(node,
             "Individual candidates",
@@ -293,7 +302,7 @@ class ElectionSimulation {
     }
 
     performSNTV() {
-        this.sntv = new SingleNonTransferableVote(this.seatCount);
+        this.sntv = new SingleNonTransferableVote(this.seatCount, this.electionThreshold);
         this.sntv.performElection();
     }
 
