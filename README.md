@@ -1,4 +1,5 @@
 # elections
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/frcroth/elections.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/frcroth/elections/context:javascript)  
 This tool allows you to simulate elections. Place candidates and voters on a political coordinate system, and compare different voting systems to get different results.
 
 ![](doc/Screenshot_20210126.png)
