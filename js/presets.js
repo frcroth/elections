@@ -2,6 +2,7 @@ import { Model } from "./model.js";
 
 let presets = {
     "the-outlier": {
+        name: "The outlier",
         voters: [
             { x: 0.0325, y: 0.835 },
             { x: 0.14, y: 0.83 },
@@ -46,7 +47,7 @@ let presets = {
         ]
     },
     "the-compromise": {
-
+        name: "The compromise",
         voters: [
             { x: 0.4875, y: 0.0375 },
             { x: 0.4925, y: 0.05 },
@@ -132,6 +133,7 @@ let presets = {
 
     },
     "balance": {
+        name: "Balance",
         voters: [
             { x: 0, y: 0 },
             { x: 0, y: 0.05 },
@@ -583,6 +585,7 @@ let presets = {
         ]
     },
     "dominant center": {
+        name: "Dominant Center",
         "voters": [
             { x: 0.0788565780144493, y: 0.8362082960282228 }, { x: 0.14457039302649038, y: 0.8953507295390597 }, { x: 0.09364218639215854, y: 0.970921616802907 }, { x: 0.036142598256622596, y: 0.9167077194179731 }, { x: 0.03778544363192362, y: 0.11828486702167394 }, { x: 0.09364218639215854, y: 0.07557088726384724 }, { x: 0.09364218639215854, y: 0.19057006353491915 }, { x: 0.16264169215480168, y: 0.1330704753993832 }, { x: 0.7721373263914827, y: 0.12485624852287805 }, { x: 0.8362082960282228, y: 0.07392804188854622 }, { x: 0.8986364202896618, y: 0.1149991762710719 }, { x: 0.8444225229047279, y: 0.16592738290540374 }, { x: 0.8707080489095443, y: 0.849351059030631 }, { x: 0.8164941515246105, y: 0.8969935749143607 }, { x: 0.8608509766577381, y: 0.9544931630498967 }, { x: 0.9347790185462844, y: 0.9314933277956824 }, { x: 0.4665680865854917, y: 0.5257105200963287 }, { x: 0.4452110967065783, y: 0.47313946808669577 }, { x: 0.486282231089104, y: 0.4435682513312773 }, { x: 0.5273533654716297, y: 0.484639385713803 }, { x: 0.5125677570939204, y: 0.5306390562222317 }, { x: 0.5289962108469307, y: 0.4435682513312773 }, { x: 0.43371117907947115, y: 0.42878264295356805 }, { x: 0.1264990938981791, y: 0.84770821365533 }, { x: 0.8805651211613506, y: 0.1642845375301027 }, { x: 0.727780501258355, y: 0.08378511414035238 }, { x: 0.9232791009191772, y: 0.8657795127836413 }, { x: 0.7984228523962992, y: 0.8378511414035238 }, { x: 0.910136337916769, y: 0.9643502353017028 }, { x: 0.4189255707017619, y: 0.5043535302174154 }, { x: 0.5109249117186194, y: 0.40578280769935365 }, { x: 0.550353200725844, y: 0.5092820663433184 }, { x: 0.47478231346199684, y: 0.550353200725844 }, { x: 0.5289962108469307, y: 0.5651388091035533 }
         ],
@@ -605,7 +608,15 @@ function setPreset(name) {
     loadPreset(preset);
 }
 
-document.getElementById("theOutlierButton").onclick = () => setPreset("the-outlier");
-document.getElementById("theCompromiseButton").onclick = () => setPreset("the-compromise");
-document.getElementById("balanceButton").onclick = () => setPreset("balance");
-document.getElementById("dominantCenterButton").onclick = () => setPreset("dominant center");
+function buildPresetSelector() {
+    Object.entries(presets).forEach(preset => {
+        let presetButton = document.createElement("a");
+        presetButton.classList.add("dropdown-item");
+        presetButton.href = "javascript:void(0);";
+        presetButton.innerHTML = preset[1].name;
+        presetButton.onclick = () => setPreset(preset[0]);
+        document.getElementById("preset-dropdown").appendChild(presetButton);
+    });
+}
+
+buildPresetSelector();

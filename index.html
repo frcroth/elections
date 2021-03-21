@@ -72,6 +72,7 @@
             <div class="form-inline">
                 <label for="electionThresholdInput">Election threshold</label>
                 <input type="Number" id="electionThresholdInput" value="0" min="0" max="30" disabled="true" />
+                <label>%</label>
             </div>
         </div>
     </div>
@@ -104,14 +105,7 @@
                             id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Presets
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" id="theOutlierButton" href="javascript:void(0);">The
-                                outlier</a>
-                            <a class="dropdown-item" id="theCompromiseButton" href="javascript:void(0);">The
-                                compromise</a>
-                            <a class="dropdown-item" id="balanceButton" href="javascript:void(0);">Balance</a>
-                            <a class="dropdown-item" id="dominantCenterButton" href="javascript:void(0);">Dominant
-                                Center</a>
+                        <div id="preset-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         </div>
                     </div>
                     <div>
