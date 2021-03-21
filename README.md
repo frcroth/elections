@@ -8,12 +8,14 @@ This tool allows you to simulate elections. Place candidates and voters on a pol
 
 ### Mechanisms
 
-Currently implemented voting mechanisms:
+Currently implemented voting mechanisms for a single seat:
 - [First past the post](https://en.wikipedia.org/wiki/First-past-the-post_voting)
 - [Instant runoff](https://en.wikipedia.org/wiki/Instant-runoff_voting)
 - [Borda count](https://en.wikipedia.org/wiki/Borda_count)
 - [Bucklin voting](https://en.wikipedia.org/wiki/Bucklin_voting#Voting_process)
-- [Condorcet method](https://en.wikipedia.org/wiki/Condorcet_method)  
+- [Condorcet method](https://en.wikipedia.org/wiki/Condorcet_method)
+- [Approval voting](https://en.wikipedia.org/wiki/Approval_voting)  
+
 For multiple seats:
 - [Sainte-Laguë method](https://en.wikipedia.org/wiki/Webster/Sainte-Lagu%C3%AB_method) 
 - [Largest Remainder method](https://en.wikipedia.org/wiki/Largest_remainder_method) with different quotas

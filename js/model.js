@@ -67,6 +67,14 @@ export class Model {
         return preferenceMap;
     }
 
+    getVoterCountWithinDistance(limit) {
+        let distances = {};
+        this.candidates.forEach(candidate => {
+            distances[candidate.id] = this.voters.filter(voter => this.calculateDistance(voter.pos, candidate.pos) <= limit).length;
+        });
+        return distances;
+    }
+
     getFirstPreferences() {
         let preferenceMap = {};
         this.voters.forEach(voter => preferenceMap[voter.id] = this.getPreferences(voter)[0]);
@@ -131,7 +139,7 @@ export class Model {
         let dissatisfactionMap = {};
         let winner = this.candidates[winner_id];
         this.voters.forEach((voter) => dissatisfactionMap[voter.id] = this.calculateDistance(voter.pos, winner.pos) /
-      this.getDiagonalLength());
+            this.getDiagonalLength());
         return dissatisfactionMap;
     }
 

@@ -1,5 +1,5 @@
 import { Model } from "./model.js";
-import { FirstPastThePost, InstantRunoff, BordaCount, BucklinVote, CondorcetMethod } from "./elections.js";
+import { FirstPastThePost, InstantRunoff, BordaCount, BucklinVote, CondorcetMethod, ApprovalVoting } from "./elections.js";
 import { SingleNonTransferableVote, SainteLaguëVote, LargestRemainder, Dhondt, MacaneseDhondt, HuntingtonHill } from "./multi-seat-election.js";
 
 class CoordinateSystem {
@@ -242,6 +242,10 @@ class ElectionSimulation {
         this.buildPerformElectionButton(node,
             "Pairwise condorcet",
             () => new CondorcetMethod().performElection());
+
+        this.buildPerformElectionButton(node,
+            "Approval voting",
+            () => new ApprovalVoting().performElection());
     }
 
     buildMultiSeatElectionOptions(node) {

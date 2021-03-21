@@ -414,3 +414,21 @@ export class CondorcetMethod extends Election {
         return text;
     }
 }
+
+export class ApprovalVoting extends Election {
+    getResults() {
+        return Object.values(this.model.getVoterCountWithinDistance(0.3));
+    }
+
+    getDescription() {
+        return "With <i>approval voting</i>, every voter makes chooses a number of candidates that they agree with. These are not ranked. In this model, these are candidates within a certain radius.";
+    }
+
+    getResultText() {
+        if(this.mostVotesTied()){
+            return "There has not been a clear winner. This can happen with approval voting.";
+        }
+        let text = `The winner is the ${this.getWinner().party}!`;
+        return text;
+    }
+}
