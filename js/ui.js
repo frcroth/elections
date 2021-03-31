@@ -144,7 +144,7 @@ class ElectionSimulation {
         this.build();
         this.initModeSelector();
         document.electionSimulation = this;
-        this.seatCount = 5;
+        this.seatCount = 10;
         this.electionThreshold = 0;
     }
 
