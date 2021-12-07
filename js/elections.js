@@ -1,6 +1,3 @@
-
-import Chart from "https://jspm.dev/npm:chart.js";
-
 export class Election {
 
     constructor() {
@@ -48,18 +45,6 @@ export class Election {
             },
             options: {
                 // responsive: true,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0
-                        }
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            offsetGridLines: true
-                        }
-                    }]
-                },
                 fullWidth: false,
                 title: {
                     display: true,

@@ -1,4 +1,3 @@
-import Chart from "https://jspm.dev/npm:chart.js";
 export class MultiSeatElection {
     constructor(seatNumber, electionThreshold) {
         this.electionThreshold = electionThreshold;
@@ -60,8 +59,8 @@ export class MultiSeatElection {
                     display: true,
                     text: "Election results"
                 },
-                rotation: 1 * Math.PI,
-                circumference: 1 * Math.PI
+                rotation: 270,
+                circumference: 180
             }
         });
 
