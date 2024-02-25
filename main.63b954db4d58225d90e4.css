@@ -1,0 +1,88 @@
+/*!**********************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./css/custom.css ***!
+  \**********************************************************************************************/
+* {
+    font-family: "Lato", sans-serif;
+    padding: 3px;
+}
+
+div {
+    margin: 2px;
+}
+
+li {
+    list-style-type: none;
+}
+
+canvas#coordinate-system {
+    border: 1px solid #000000;
+    width: 100%;
+}
+
+.party-container {
+    width: max-content;
+    padding: 1%;
+}
+
+#coordinate-system-col {
+    padding: 20px;
+    min-width: 35%;
+    max-width: 500px;
+}
+
+#central-column {
+    max-width: 400px;
+}
+
+#result-column {
+    min-width: 400px;
+}
+
+.main-row {
+    width: 100%;
+}
+
+.btn-secondary {
+    margin: 5px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 50px;
+    background-color: #f5f5f5;
+    z-index: 10;
+}
+
+.footer div {
+    margin-right: 0px;
+}
+
+.footer div div {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+#additional-results {
+    padding: 20px;
+}
+
+#election-results {
+    min-width: 30%;
+}
+
+#diagram-canvas {
+    display: block;
+    margin: auto;
+}
+
+.quote {
+    font-style: italic;
+    margin: auto;
+}
+
+.head-row {
+    width: 100%;
+}
+
