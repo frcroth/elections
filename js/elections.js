@@ -33,6 +33,7 @@ export class Election {
         let canvas = document.getElementById("diagram-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // eslint-disable-next-line no-undef
         document.barChart = new Chart(ctx, {
             type: "bar",
             data: {

@@ -44,6 +44,7 @@ export class MultiSeatElection {
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let sorted_data = document.model.candidates.map(candidate => data[candidate.id]);
+        // eslint-disable-next-line no-undef
         document.doughnut = new Chart(ctx, {
             type: "doughnut",
             data: {
