@@ -72,6 +72,7 @@ class CoordinateSystem {
 
     clearCanvas() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        document.getElementById("election-results-parliament").innerHTML = "";
     }
 
     drawCandidatePoint(candidate) {
@@ -180,6 +181,7 @@ class ElectionSimulation {
     initSeatCountInput() {
         this.seatCountInput = document.getElementById("seatCountInput");
         this.seatCountInput.onchange = () => this.seatCount = this.seatCountInput.valueAsNumber;
+        this.seatCount = this.seatCountInput.valueAsNumber;
     }
 
     initElectionThresholdInput() {
@@ -335,15 +337,13 @@ class ElectionSimulation {
     }
 }
 
-function initPage() {
+export function initPage() {
     document.model = new Model();
     document.coordinateSystem = new CoordinateSystem("coordinate-system");
     window.onresize = () => document.coordinateSystem.onResize();
     document.coordinateSystem.adjustToSize();
     document.electionSimulation = new ElectionSimulation();
 }
-
-initPage();
 
 
 /*

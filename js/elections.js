@@ -1,3 +1,5 @@
+import Chart from "chart.js/auto";
+
 export class Election {
 
     constructor() {
@@ -31,6 +33,7 @@ export class Election {
         document.barChart?.destroy();
         document.doughnut?.destroy();
         let canvas = document.getElementById("diagram-canvas");
+        document.getElementById("election-results-parliament").innerHTML = "";
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         // eslint-disable-next-line no-undef

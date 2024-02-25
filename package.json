@@ -6,12 +6,20 @@
   "directories": {
     "doc": "doc"
   },
-  "dependencies": {},
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "gh-pages": "^6.1.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=development npx webpack-dev-server --config webpack.config.js",
+    "format": "npx eslint --fix js",
+    "build": "webpack --mode=development --config webpack.config.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -22,5 +30,13 @@
   "bugs": {
     "url": "https://github.com/frcroth/elections/issues"
   },
-  "homepage": "https://github.com/frcroth/elections#readme"
+  "homepage": "https://github.com/frcroth/elections#readme",
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "css-loader": "^6.10.0",
+    "hast-util-to-html": "^9.0.0",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.8.0",
+    "parliament-svg": "^3.0.0"
+  }
 }

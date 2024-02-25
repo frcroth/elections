@@ -1,3 +1,6 @@
+import parliamentSVG from "parliament-svg";
+import { toHtml as toSvg } from "hast-util-to-html";
+
 export class MultiSeatElection {
     constructor(seatNumber, electionThreshold) {
         this.electionThreshold = electionThreshold;
@@ -43,27 +46,18 @@ export class MultiSeatElection {
         let canvas = document.getElementById("diagram-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let sorted_data = document.model.candidates.map(candidate => data[candidate.id]);
-        // eslint-disable-next-line no-undef
-        document.doughnut = new Chart(ctx, {
-            type: "doughnut",
-            data: {
-                datasets: [{
-                    data: sorted_data,
-                    label: "Results",
-                    backgroundColor: document.model.candidates.map(candidate => candidate.color),
-                }],
-                labels: document.model.candidates.map(candidate => candidate.party)
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: "Election results"
-                },
-                rotation: 270,
-                circumference: 180
-            }
+
+        let resultObj = {};
+        document.model.candidates.forEach(candidate =>
+        { 
+            resultObj[candidate.party] = {
+                "seats" : data[candidate.id],
+                "colour" : candidate.color
+            };
         });
+        const virtualSvg = parliamentSVG(resultObj, [null]);
+        const svg = toSvg(virtualSvg);
+        document.getElementById("election-results-parliament").innerHTML = svg;
 
     }
 

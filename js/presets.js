@@ -608,7 +608,7 @@ function setPreset(name) {
     loadPreset(preset);
 }
 
-function buildPresetSelector() {
+export function buildPresetSelector() {
     Object.entries(presets).forEach(preset => {
         let presetButton = document.createElement("a");
         presetButton.classList.add("dropdown-item");
@@ -619,4 +619,3 @@ function buildPresetSelector() {
     });
 }
 
-buildPresetSelector();
